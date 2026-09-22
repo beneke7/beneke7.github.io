@@ -1,52 +1,14 @@
-const planetVideo = document.querySelector(".planet-video");
+const planet = document.querySelector(".planet-space picture");
 
-if (planetVideo && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
-  const rotationSpeed = Number(planetVideo.dataset.speed) || 4;
+if (planet && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
   const clockKey = "pixel-planet-started-at";
   let startedAt = Number(sessionStorage.getItem(clockKey));
-
   if (!Number.isFinite(startedAt) || startedAt <= 0 || startedAt > Date.now()) {
     startedAt = Date.now();
     sessionStorage.setItem(clockKey, String(startedAt));
   }
-  const elapsed = (Date.now() - startedAt) / 1000 * rotationSpeed;
-
-  const startPlanet = () => {
-    planetVideo.classList.add("is-ready");
-    planetVideo.play().catch(() => {});
-  };
-
-  planetVideo.addEventListener("loadedmetadata", () => {
-    if (Number.isFinite(planetVideo.duration) && planetVideo.duration > 0) {
-      const resumeAt = elapsed % planetVideo.duration;
-      if (resumeAt > 0.05) {
-        planetVideo.addEventListener("seeked", startPlanet, { once: true });
-        planetVideo.currentTime = resumeAt;
-        return;
-      }
-    }
-    startPlanet();
-  }, { once: true });
-
-  planetVideo.addEventListener("error", () => planetVideo.classList.add("is-error"), { once: true });
-  planetVideo.playbackRate = rotationSpeed;
-  planetVideo.preload = "auto";
-  planetVideo.src = planetVideo.dataset.src;
-
-  document.addEventListener("visibilitychange", () => {
-    if (document.hidden) {
-      planetVideo.pause();
-      return;
-    }
-    if (!Number.isFinite(planetVideo.duration) || planetVideo.duration <= 0) return;
-    const resumeAt = ((Date.now() - startedAt) / 1000 * rotationSpeed) % planetVideo.duration;
-    if (Math.abs(planetVideo.currentTime - resumeAt) > 0.25) {
-      planetVideo.addEventListener("seeked", startPlanet, { once: true });
-      planetVideo.currentTime = resumeAt;
-      return;
-    }
-    startPlanet();
-  });
+  const phase = (Date.now() - startedAt) % 300000;
+  planet.style.animationDelay = `${-phase / 1000}s`;
 }
 
 document.querySelectorAll(".markdown-content h2, .markdown-content h3").forEach((heading, index) => {
