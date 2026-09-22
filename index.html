@@ -3,274 +3,106 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="A small home on the web for notes, projects, and other things worth keeping.">
-  <meta name="theme-color" content="#080a1d">
-  <title>beneke7 — personal website</title>
+  <meta name="theme-color" content="#000000">
+  <title>Beneke’s corner of the web</title>
   <style>
-    :root {
-      color-scheme: light;
-      --paper: #fbfaf7;
-      --ink: #22242a;
-      --muted: #686b72;
-      --rule: #deddd7;
-      --accent: #b43d32;
-      --space: #0c0818;
-      --starlight: #d7f68c;
-    }
-
     * { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
     body {
-      margin: 0;
-      background: var(--paper);
-      color: var(--ink);
-      font: 14px/1.6 Verdana, Geneva, sans-serif;
-    }
-    a { color: var(--accent); }
-    a:visited { color: #674378; }
-    a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
-
-    .site-header,
-    .page-content,
-    .site-footer {
-      width: min(100% - 48px, 1020px);
-      margin-inline: auto;
-    }
-    .site-header-inner {
-      min-height: 70px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-      border-bottom: 1px solid var(--rule);
-    }
-    .wordmark {
-      color: var(--ink);
-      font: 700 19px/1.2 Georgia, "Times New Roman", serif;
-      text-decoration: none;
-    }
-    .wordmark:visited { color: var(--ink); }
-    .wordmark span { color: var(--accent); }
-    nav { display: flex; gap: 22px; }
-    nav a {
-      color: var(--muted);
-      font-size: 12px;
-      text-decoration: none;
-    }
-    nav a:visited { color: var(--muted); }
-    nav a:hover { color: var(--accent); text-decoration: underline; }
-
-    .hero {
-      overflow: hidden;
-      background: var(--space);
-      color: #f8f8f2;
-    }
-    .hero-inner {
-      width: min(100% - 48px, 1020px);
-      min-height: 510px;
-      margin-inline: auto;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
-      align-items: center;
-      gap: 20px;
-      padding: 20px 0;
-    }
-    .hero-copy { position: relative; z-index: 1; min-width: 0; }
-    .eyebrow,
-    .section-label {
-      margin: 0 0 13px;
-      color: var(--starlight);
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.13em;
-      text-transform: uppercase;
-    }
-    h1, h2, p { margin-top: 0; }
-    h1 {
-      max-width: 560px;
-      width: 100%;
-      margin-bottom: 18px;
-      font: 400 clamp(38px, 5vw, 58px)/1.08 Georgia, "Times New Roman", serif;
-      letter-spacing: -0.045em;
-    }
-    .hero-copy > p:not(.eyebrow) {
-      max-width: 420px;
-      margin-bottom: 24px;
-      color: #c4c6d0;
-      font-size: 15px;
-    }
-    .hero-link {
-      color: var(--starlight);
-      font-size: 12px;
-      text-decoration-thickness: 1px;
-      text-underline-offset: 4px;
-    }
-    .hero-link:visited { color: var(--starlight); }
-    .hero-art {
       position: relative;
-      display: grid;
-      justify-items: center;
-      margin: 0;
+      isolation: isolate;
+      max-width: 42rem;
+      min-height: 100vh;
+      margin: 0 auto;
+      padding: 3rem 1rem;
+      background: #000;
+      color: #fff;
+      font: 14px/1.45 Verdana, Geneva, sans-serif;
     }
-    .hero-art img {
-      display: block;
-      width: min(100%, 450px);
-      height: auto;
-      image-rendering: pixelated;
-      mix-blend-mode: lighten;
+    a, a:visited { color: #fff; }
+    a:hover { color: #d7f68c; }
+    h1, h2 { font-family: Georgia, "Times New Roman", serif; }
+    h1 { font-size: 2rem; }
+    h2 { font-size: 1.35rem; }
+    header, footer { border-bottom: 1px solid #59606b; }
+    header { padding-bottom: 1rem; }
+    nav a { margin-right: 1rem; }
+    main section { margin-top: 2rem; }
+    footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #59606b; border-bottom: 0; }
+    .space {
+      position: fixed;
+      z-index: -1;
+      inset: 0;
+      overflow: hidden;
+      background: #000;
     }
-    .hero-art figcaption {
+    .space::before {
       position: absolute;
-      right: 0;
-      bottom: 8px;
-      color: #d2d5df;
-      font-size: 10px;
-      text-align: right;
+      inset: 0;
+      background-image:
+        radial-gradient(2px 2px at 8% 17%, #fff 99%, transparent),
+        radial-gradient(1px 1px at 19% 72%, #c6ebff 99%, transparent),
+        radial-gradient(1px 1px at 31% 29%, #fff 99%, transparent),
+        radial-gradient(2px 2px at 44% 84%, #d7f68c 99%, transparent),
+        radial-gradient(1px 1px at 58% 12%, #fff 99%, transparent),
+        radial-gradient(1px 1px at 69% 63%, #c6ebff 99%, transparent),
+        radial-gradient(2px 2px at 82% 24%, #fff 99%, transparent),
+        radial-gradient(1px 1px at 93% 81%, #d7f68c 99%, transparent),
+        radial-gradient(1px 1px at 4% 56%, #c6ebff 99%, transparent),
+        radial-gradient(1px 1px at 15% 39%, #fff 99%, transparent),
+        radial-gradient(1px 1px at 23% 91%, #fff 99%, transparent),
+        radial-gradient(1px 1px at 28% 9%, #d7f68c 99%, transparent),
+        radial-gradient(1px 1px at 38% 56%, #fff 99%, transparent),
+        radial-gradient(1px 1px at 48% 42%, #c6ebff 99%, transparent),
+        radial-gradient(1px 1px at 54% 94%, #fff 99%, transparent),
+        radial-gradient(1px 1px at 63% 78%, #fff 99%, transparent),
+        radial-gradient(1px 1px at 74% 46%, #d7f68c 99%, transparent),
+        radial-gradient(1px 1px at 78% 8%, #fff 99%, transparent),
+        radial-gradient(1px 1px at 88% 51%, #c6ebff 99%, transparent),
+        radial-gradient(1px 1px at 97% 35%, #fff 99%, transparent);
+      content: "";
     }
-    .hero-art figcaption a { color: #d2d5df; }
-
-    .page-content { padding-top: 12px; }
-    .content-section {
-      display: grid;
-      grid-template-columns: 150px 1fr;
-      gap: 36px;
-      padding: 42px 0;
-      border-bottom: 1px solid var(--rule);
-      scroll-margin-top: 20px;
+    .space picture {
+      position: absolute;
+      top: 50%;
+      right: -2vw;
+      width: min(76vh, 52vw, 768px);
+      aspect-ratio: 1;
+      transform: translateY(-50%);
     }
-    .section-label {
-      margin: 5px 0 0;
-      color: var(--muted);
-    }
-    h2 {
-      margin-bottom: 8px;
-      font: 400 25px/1.25 Georgia, "Times New Roman", serif;
-      letter-spacing: -0.02em;
-    }
-    .section-copy { max-width: 650px; }
-    .section-copy p { margin-bottom: 0; color: var(--muted); }
-    .project-links {
-      display: grid;
-      max-width: 620px;
-      margin-top: 18px;
-      border-top: 1px solid var(--rule);
-    }
-    .project-link {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 20px;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--rule);
-      text-decoration: none;
-    }
-    .project-link span { color: var(--muted); font-size: 11px; }
-    .project-link:hover strong { text-decoration: underline; }
-    .site-footer {
-      padding: 22px 0 34px;
-      color: var(--muted);
-      font-size: 11px;
-    }
-    .site-footer p { margin: 0; }
-
-    @media (max-width: 680px) {
-      .site-header,
-      .page-content,
-      .site-footer,
-      .hero-inner { width: min(100% - 36px, 1020px); }
-      .hero-inner {
-      grid-template-columns: minmax(0, 1fr);
-        gap: 0;
-        padding-top: 48px;
-      }
-      .hero-art { width: min(100%, 390px); justify-self: center; margin-top: -10px; }
-      .hero-art figcaption { bottom: 4px; }
-      h1 { max-width: 14ch; font-size: clamp(34px, 9vw, 42px); }
-      .content-section { grid-template-columns: 1fr; gap: 12px; padding: 32px 0; }
-      .section-label { margin: 0; }
-    }
-
-    @media (max-width: 420px) {
-      .site-header-inner { min-height: 62px; gap: 12px; }
-      .wordmark { font-size: 17px; }
-      nav { gap: 12px; }
-      nav a { font-size: 11px; }
-      .hero-inner { padding-top: 38px; }
-      .project-link { align-items: flex-start; flex-direction: column; gap: 2px; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
+    .space img { display: block; width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated; }
+    main, header, footer { text-shadow: 0 1px 4px #000; }
+    @media (max-width: 600px) {
+      body { padding-top: 2rem; }
+      .space picture { right: -34vw; width: 110vw; opacity: .68; }
     }
   </style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="site-header-inner">
-      <a class="wordmark" href="#top">beneke7<span>.</span></a>
-      <nav aria-label="Main navigation">
-        <a href="#writing">Writing</a>
-        <a href="#projects">Projects</a>
-        <a href="#about">About</a>
-      </nav>
-    </div>
+  <div class="space" aria-hidden="true">
+    <picture>
+      <source media="(prefers-reduced-motion: reduce)" srcset="assets/pixel-planet.png">
+      <img src="assets/pixel-planet.gif" alt="">
+    </picture>
+  </div>
+  <header>
+    <h1>Beneke’s corner of the web</h1>
+    <nav aria-label="Main navigation">
+      <a href="#weblog">Weblog</a>
+      <a href="#about">About</a>
+    </nav>
   </header>
-
-  <main id="top">
-    <section class="hero" aria-labelledby="page-title">
-      <div class="hero-inner">
-        <div class="hero-copy">
-          <p class="eyebrow">A personal website</p>
-          <h1 id="page-title">A small home on the internet.</h1>
-          <p>Notes, projects, and other things worth keeping.</p>
-          <a class="hero-link" href="#writing">Take a look around ↓</a>
-        </div>
-        <figure class="hero-art">
-          <img src="assets/pixel-planet.png" alt="Pixel-art green and cream planet against a dark, starry sky">
-          <figcaption>Pixel planet via <a href="https://github.com/Deep-Fold/PixelPlanets">PixelPlanets</a></figcaption>
-        </figure>
-      </div>
+  <main>
+    <section id="weblog">
+      <h2>Weblog</h2>
+      <p>This page is still being put together. Check back soon.</p>
     </section>
-
-    <div class="page-content">
-      <section class="content-section" id="writing">
-        <p class="section-label">01 / Writing</p>
-        <div class="section-copy">
-          <h2>Writing</h2>
-          <p>Notes and essays will find a home here.</p>
-        </div>
-      </section>
-
-      <section class="content-section" id="projects">
-        <p class="section-label">02 / Projects</p>
-        <div class="section-copy">
-          <h2>Projects</h2>
-          <p>A few things from around the web.</p>
-          <div class="project-links">
-            <a class="project-link" href="https://beneke7.github.io/physics-problems-corpus/">
-              <strong>Physics problem finder</strong>
-              <span>Searchable olympiad problem catalogue ↗</span>
-            </a>
-            <a class="project-link" href="https://github.com/beneke7">
-              <strong>GitHub</strong>
-              <span>Code and experiments ↗</span>
-            </a>
-          </div>
-        </div>
-      </section>
-
-      <section class="content-section" id="about">
-        <p class="section-label">03 / About</p>
-        <div class="section-copy">
-          <h2>About</h2>
-          <p>This site is a work in progress. More soon.</p>
-        </div>
-      </section>
-    </div>
+    <section id="about">
+      <h2>About</h2>
+      <p>A small personal site on the old-fashioned web.</p>
+    </section>
   </main>
-
-  <footer class="site-footer">
-    <p>Made for the web. Pixel planet via <a href="https://github.com/Deep-Fold/PixelPlanets">PixelPlanets by Deep-Fold</a>.</p>
+  <footer>
+    <small>Hand-written HTML. No tracking, no fuss. Planet by <a href="https://github.com/Deep-Fold/PixelPlanets">PixelPlanets</a>.</small>
   </footer>
 </body>
 </html>
