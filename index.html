@@ -10,13 +10,17 @@
     body {
       position: relative;
       isolation: isolate;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
       max-width: 42rem;
-      min-height: 100vh;
+      min-height: 100svh;
       margin: 0 auto;
       padding: 3rem 1rem;
       background: #000;
       color: #fff;
       font: 14px/1.45 Verdana, Geneva, sans-serif;
+      text-align: center;
     }
     a, a:visited { color: #fff; }
     a:hover { color: #d7f68c; }
@@ -40,62 +44,60 @@
       z-index: 1;
       width: 2px;
       height: 2px;
+      color: #fff;
       background: currentColor;
       box-shadow: 0 -8px currentColor, 0 -4px currentColor, 0 4px currentColor, 0 8px currentColor,
         -8px 0 currentColor, -4px 0 currentColor, 4px 0 currentColor, 8px 0 currentColor;
     }
-    .star-a { top: 3%; left: 2%; color: #52c5e8; }
-    .star-b { top: 5%; right: 18%; color: #f0a45f; }
-    .star-c { top: 24%; right: 31%; color: #84d968; }
-    .star-d { top: 50%; left: 5%; color: #52c5e8; }
-    .star-e { right: 12%; bottom: 24%; color: #f0a45f; }
-    .star-f { left: 11%; bottom: 9%; color: #84d968; }
-    .star-g { right: 43%; bottom: 4%; color: #52c5e8; }
+    .star-a { top: 3%; left: 2%; }
+    .star-b { top: 5%; right: 18%; }
+    .star-c { top: 24%; right: 31%; }
+    .star-d { top: 50%; left: 5%; }
+    .star-e { right: 12%; bottom: 24%; }
+    .star-f { left: 11%; bottom: 9%; }
+    .star-g { right: 43%; bottom: 4%; }
     .space::before {
       position: absolute;
       inset: 0;
       background-image:
         radial-gradient(2px 2px at 8% 17%, #fff 99%, transparent),
-        radial-gradient(1px 1px at 19% 72%, #c6ebff 99%, transparent),
+        radial-gradient(1px 1px at 19% 72%, #fff 99%, transparent),
         radial-gradient(1px 1px at 31% 29%, #fff 99%, transparent),
-        radial-gradient(2px 2px at 44% 84%, #d7f68c 99%, transparent),
+        radial-gradient(2px 2px at 44% 84%, #fff 99%, transparent),
         radial-gradient(1px 1px at 58% 12%, #fff 99%, transparent),
-        radial-gradient(1px 1px at 69% 63%, #c6ebff 99%, transparent),
+        radial-gradient(1px 1px at 69% 63%, #fff 99%, transparent),
         radial-gradient(2px 2px at 82% 24%, #fff 99%, transparent),
-        radial-gradient(1px 1px at 93% 81%, #d7f68c 99%, transparent),
-        radial-gradient(1px 1px at 4% 56%, #c6ebff 99%, transparent),
+        radial-gradient(1px 1px at 93% 81%, #fff 99%, transparent),
+        radial-gradient(1px 1px at 4% 56%, #fff 99%, transparent),
         radial-gradient(1px 1px at 15% 39%, #fff 99%, transparent),
         radial-gradient(1px 1px at 23% 91%, #fff 99%, transparent),
-        radial-gradient(1px 1px at 28% 9%, #d7f68c 99%, transparent),
+        radial-gradient(1px 1px at 28% 9%, #fff 99%, transparent),
         radial-gradient(1px 1px at 38% 56%, #fff 99%, transparent),
-        radial-gradient(1px 1px at 48% 42%, #c6ebff 99%, transparent),
+        radial-gradient(1px 1px at 48% 42%, #fff 99%, transparent),
         radial-gradient(1px 1px at 54% 94%, #fff 99%, transparent),
         radial-gradient(1px 1px at 63% 78%, #fff 99%, transparent),
-        radial-gradient(1px 1px at 74% 46%, #d7f68c 99%, transparent),
+        radial-gradient(1px 1px at 74% 46%, #fff 99%, transparent),
         radial-gradient(1px 1px at 78% 8%, #fff 99%, transparent),
-        radial-gradient(1px 1px at 88% 51%, #c6ebff 99%, transparent),
+        radial-gradient(1px 1px at 88% 51%, #fff 99%, transparent),
         radial-gradient(1px 1px at 97% 35%, #fff 99%, transparent);
       content: "";
     }
     .space picture {
       position: absolute;
-      right: -18vw;
+      left: -18vw;
       bottom: -32vh;
       width: min(128vh, 90vw, 1150px);
       aspect-ratio: 1;
-      filter: drop-shadow(0 0 10px rgb(243 154 85 / 15%));
+      filter: drop-shadow(0 0 10px rgb(246 193 124 / 15%));
     }
     .space img { display: block; width: 100%; height: 100%; object-fit: contain; image-rendering: pixelated; }
     main, header, footer { text-shadow: 0 1px 4px #000; }
-    @media (min-width: 900px) {
-      body { margin-left: clamp(2rem, 7vw, 7rem); margin-right: auto; }
-    }
     @media (max-width: 800px) {
-      .space picture { right: -20vw; bottom: -15vh; width: 85vw; opacity: .72; }
+      .space picture { left: -20vw; bottom: -15vh; width: 85vw; opacity: .72; }
     }
     @media (max-width: 600px) {
       body { padding-top: 2rem; }
-      .space picture { right: -25vw; bottom: -10vh; width: 95vw; }
+      .space picture { left: -25vw; bottom: -10vh; width: 95vw; }
     }
   </style>
 </head>
@@ -109,8 +111,8 @@
     <span class="pixel-star star-f"></span>
     <span class="pixel-star star-g"></span>
     <picture>
-      <source media="(prefers-reduced-motion: reduce)" srcset="assets/pixel-planet.png?v=2">
-      <img src="assets/pixel-planet.gif?v=2" alt="">
+      <source media="(prefers-reduced-motion: reduce)" srcset="assets/pixel-planet.png?v=3">
+      <img src="assets/pixel-planet.gif?v=3" alt="">
     </picture>
   </div>
   <header>
