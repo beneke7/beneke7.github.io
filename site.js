@@ -32,6 +32,21 @@ if (planetVideo && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
   planetVideo.playbackRate = rotationSpeed;
   planetVideo.preload = "metadata";
   planetVideo.src = planetVideo.dataset.src;
+
+  document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+      planetVideo.pause();
+      return;
+    }
+    if (!Number.isFinite(planetVideo.duration) || planetVideo.duration <= 0) return;
+    const resumeAt = ((Date.now() - startedAt) / 1000 * rotationSpeed) % planetVideo.duration;
+    if (Math.abs(planetVideo.currentTime - resumeAt) > 0.25) {
+      planetVideo.addEventListener("seeked", startPlanet, { once: true });
+      planetVideo.currentTime = resumeAt;
+      return;
+    }
+    startPlanet();
+  });
 }
 
 document.querySelectorAll(".markdown-content h2, .markdown-content h3").forEach((heading, index) => {
