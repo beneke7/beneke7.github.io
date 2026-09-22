@@ -1,5 +1,5 @@
 ---
 title: Projects
-stars: dim
+planet: gas-giant
 ---
 # Projects
