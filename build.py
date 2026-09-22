@@ -143,7 +143,7 @@ def render_page(output, title, active, body, metadata, version):
         asset, speed = PLANETS[planet]
         poster = Path("assets") / f"{asset}.png"
         fallback = Path("assets") / ("pixel-planet.gif" if asset == "pixel-planet" else f"{asset}.png")
-        planet_markup = f'''<video class="planet-video" data-src="{versioned_url(Path('assets') / f'{asset}.webm', output, version)}" data-speed="{speed}" muted loop playsinline preload="none"
+        planet_markup = f'''<video class="planet-video" data-src="{versioned_url(Path('assets') / f'{asset}.webm', output, version)}" data-speed="{speed}" muted loop playsinline preload="auto"
       poster="{versioned_url(poster, output, version)}" aria-hidden="true"></video>
     <picture><img src="{versioned_url(fallback, output, version)}" alt=""></picture>'''
         planet_credit = f' Planet by <a href="https://github.com/Deep-Fold/PixelPlanets">PixelPlanets</a>.'

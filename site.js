@@ -30,7 +30,7 @@ if (planetVideo && !matchMedia("(prefers-reduced-motion: reduce)").matches) {
 
   planetVideo.addEventListener("error", () => planetVideo.classList.add("is-error"), { once: true });
   planetVideo.playbackRate = rotationSpeed;
-  planetVideo.preload = "metadata";
+  planetVideo.preload = "auto";
   planetVideo.src = planetVideo.dataset.src;
 
   document.addEventListener("visibilitychange", () => {
