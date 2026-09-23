@@ -5,6 +5,10 @@ title: Music
 
 ![[trumpet.jpg]]
 
+## Learn Ethiojazz!
+
+Some crazy new dlc to life, you have to check it out!
+[getting started](https://youtu.be/x-_R9sycN7w?si=Nq9lpJ8L9Un2ktHG)
 ## My music
 
 [**Mercy Deluxe session**]() coming soon ...
