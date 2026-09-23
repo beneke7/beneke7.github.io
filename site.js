@@ -91,7 +91,7 @@ document.querySelectorAll(".markdown-content h2, .markdown-content h3, .markdown
   const toggle = document.createElement("button");
   toggle.className = "heading-toggle";
   toggle.type = "button";
-  const initiallyExpanded = !(musicPage && heading.id === "track-notes");
+  const initiallyExpanded = !(musicPage && heading.id === "story-of-the-album");
   toggle.textContent = initiallyExpanded ? "▾" : "▸";
   toggle.setAttribute("aria-expanded", String(initiallyExpanded));
   toggle.setAttribute("aria-controls", content.id);
