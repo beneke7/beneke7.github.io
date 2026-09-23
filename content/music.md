@@ -3,7 +3,7 @@ title: Music
 ---
 # Music
 
-![[trumpet.jpg|A child playing a toy trumpet]]
+![[trumpet.jpg]]
 
 ## My record
 
