@@ -153,26 +153,21 @@ def render_page(output, title, active, body, metadata, version):
         asset = PLANETS[planet]
         gif = Path("assets") / f"{asset}.gif"
         poster = Path("assets") / f"{asset}.png"
-        light_sources = ""
-        poster_light_sources = ""
+        gif_url = versioned_url(gif, output, version)
+        poster_url = versioned_url(poster, output, version)
+        gif_theme_sources = f' data-dark-src="{gif_url}"'
+        poster_theme_sources = f' data-dark-src="{poster_url}"'
         if planet == "original":
             light_gif = Path("assets/light-wet-planet.gif")
             light_poster = Path("assets/light-wet-planet.png")
-            light_sources = (
-                f' data-dark-src="{versioned_url(gif, output, version)}"'
-                f' data-light-src="{versioned_url(light_gif, output, version)}"'
-            )
-            poster_light_sources = (
-                f' data-dark-src="{versioned_url(poster, output, version)}"'
-                f' data-light-src="{versioned_url(light_poster, output, version)}"'
-            )
-        poster_source = (
-            f'<source media="(max-width: 800px), (prefers-reduced-motion: reduce)" '
-            f'srcset="{versioned_url(poster, output, version)}"{poster_light_sources}>'
-        )
+            gif_theme_sources += f' data-light-src="{versioned_url(light_gif, output, version)}"'
+            poster_theme_sources += f' data-light-src="{versioned_url(light_poster, output, version)}"'
+        poster_source = f'<source class="planet-poster-source" media="(min-width: 801px) and (prefers-reduced-motion: reduce)" srcset="{poster_url}"{poster_theme_sources}>'
+        gif_source = f'<source class="planet-gif-source" media="(min-width: 801px) and (prefers-reduced-motion: no-preference)" srcset="{gif_url}"{gif_theme_sources}>'
         planet_markup = f'''<picture>
     {poster_source}
-    <img class="planet-gif" src="{versioned_url(gif, output, version)}"{light_sources} alt="">
+    {gif_source}
+    <img class="planet-poster"{poster_theme_sources} alt="">
   </picture>'''
     html_title = title if active == "about" else f"{title} — Beneke’s corner of the web"
     language = escape(metadata.get("lang", "en"))

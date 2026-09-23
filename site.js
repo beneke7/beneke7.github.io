@@ -5,9 +5,11 @@ const setTheme = (theme) => {
   themeButtons.forEach((button) => {
     button.setAttribute("aria-pressed", String(button.dataset.themeChoice === theme));
   });
+  const mobileViewport = window.matchMedia("(max-width: 800px)").matches;
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   document.querySelectorAll("[data-dark-src]").forEach((image) => {
-    const source = image.dataset[theme === "light" ? "lightSrc" : "darkSrc"];
-    if (window.matchMedia("(max-width: 800px), (prefers-reduced-motion: reduce)").matches && image.classList.contains("planet-gif")) return;
+    if (mobileViewport || (reducedMotion && image.classList.contains("planet-gif-source"))) return;
+    const source = image.dataset[theme === "light" ? "lightSrc" : "darkSrc"] || image.dataset.darkSrc;
     const attribute = image.tagName === "SOURCE" ? "srcset" : "src";
     if (source && image.getAttribute(attribute) !== source) image.setAttribute(attribute, source);
   });
@@ -89,15 +91,17 @@ document.querySelectorAll(".markdown-content h2, .markdown-content h3, .markdown
   const toggle = document.createElement("button");
   toggle.className = "heading-toggle";
   toggle.type = "button";
-  toggle.textContent = "▾";
-  toggle.setAttribute("aria-expanded", "true");
+  const initiallyExpanded = !(musicPage && heading.id === "track-notes");
+  toggle.textContent = initiallyExpanded ? "▾" : "▸";
+  toggle.setAttribute("aria-expanded", String(initiallyExpanded));
   toggle.setAttribute("aria-controls", content.id);
-  toggle.setAttribute("aria-label", `Collapse ${title}`);
+  toggle.setAttribute("aria-label", `${initiallyExpanded ? "Collapse" : "Expand"} ${title}`);
   const label = document.createElement("span");
   label.className = "heading-text";
   while (heading.firstChild) label.append(heading.firstChild);
   heading.append(toggle, label);
   heading.after(content);
+  content.hidden = !initiallyExpanded;
 
   toggle.addEventListener("click", () => {
     const expanded = toggle.getAttribute("aria-expanded") === "true";

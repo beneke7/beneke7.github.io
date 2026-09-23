@@ -1,4 +1,5 @@
 * { box-sizing: border-box; }
+:root { --nav-current: #b64a5d; }
 body {
   position: relative;
   isolation: isolate;
@@ -184,8 +185,14 @@ html[data-theme="light"] .music-page img { filter: invert(1) hue-rotate(180deg);
   text-decoration: none;
 }
 .top-nav a:hover:not([aria-current="page"]) { background: rgb(255 255 255 / 9%); }
-.top-nav a[aria-current="page"] { color: #8ecbff; border-color: #8ecbff; background: transparent; }
+.top-nav a[aria-current="page"] { color: var(--nav-current); border-color: var(--nav-current); background: transparent; }
 .top-nav a:focus-visible { outline: 2px solid #8ecbff; outline-offset: 2px; }
+html[data-theme="light"] .top-nav a[aria-current="page"] {
+  color: #8f2e3e;
+  border-color: #8f2e3e;
+  text-shadow: none;
+  filter: invert(1) hue-rotate(180deg);
+}
 header { position: relative; padding: .35rem 0 1.55rem; }
 .theme-switch {
   position: absolute;
@@ -332,6 +339,8 @@ html[data-theme="light"] .space::after { opacity: .75; }
   border-radius: 50%;
 }
 .space.planet-ice-world picture, .space.planet-gas-giant picture { left: auto; right: -35vw; }
+.space.planet-ice-world picture { width: min(110vh, 75vw, 920px); }
+.space.planet-original picture { width: min(100vh, 70vw, 900px); }
 .space .planet-gif { image-rendering: pixelated; }
 html[data-theme="light"] .space.planet-original picture { filter: hue-rotate(-180deg) invert(1); }
 html[data-theme="light"] .space.planet-ice-world picture { filter: brightness(.75); }
@@ -346,20 +355,27 @@ html[data-theme="light"] .space.planet-ice-world picture { filter: brightness(.7
 main, header, footer { text-shadow: 0 1px 4px #000; }
 @media (max-width: 800px) {
   body { font-size: 120%; }
+  header { padding-bottom: .75rem; }
   .markdown-content { text-align: left; line-height: 1.65; }
   .markdown-content img { max-width: 100%; height: auto; }
   .markdown-content table { margin-inline: 0; }
   .markdown-content pre { max-width: 100%; overflow-x: auto; }
+  .markdown-content blockquote { margin-inline: 0; padding-inline-start: .9em; border-inline-start: 3px dashed #888; }
   .top-nav { font-size: 1.15rem; letter-spacing: .06em; gap: .25rem; }
   .top-nav a { min-height: 2.75rem; }
   .theme-switch { position: static; margin-top: .45rem; }
   .theme-switch button { min-width: 2.75rem; min-height: 2.75rem; }
-  .space picture { left: -38vw; bottom: -28vh; width: 90vw; }
-  .space.planet-ice-world picture, .space.planet-gas-giant picture { left: auto; right: -38vw; }
+  .space.planet-space picture { display: none; }
+  .space .star-b, .space .star-c, .space .star-e,
+  .space .star-g, .space .star-h, .space .star-j { display: none; }
+  html[data-theme="light"] .space .star-k,
+  html[data-theme="light"] .space .star-l,
+  html[data-theme="light"] .space .star-m { display: none; }
+  .space::before { opacity: .5; }
+  .space::after { display: none; }
 }
 @media (max-width: 600px) {
   body { padding: .8rem 1rem 1.75rem; font-size: 112.5%; }
-  header { padding-bottom: .75rem; }
   .top-nav { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   h1 { font-size: 1.6rem; }
   .markdown-content { overflow-wrap: break-word; }
@@ -369,6 +385,4 @@ main, header, footer { text-shadow: 0 1px 4px #000; }
   .markdown-content table { max-width: 100%; }
   .music-page ul > li { min-height: 0; margin-block: 1.2rem; }
   .music-page ul a:has(> img) { width: clamp(6rem, 30vw, 7.5rem); margin-right: .85rem; }
-  .space picture { left: -42vw; bottom: -25vh; width: 95vw; }
-  .space.planet-ice-world picture, .space.planet-gas-giant picture { left: auto; right: -42vw; }
 }

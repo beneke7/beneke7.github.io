@@ -7,7 +7,51 @@ title: Music
 
 ## My record
 
-- ![[blueprints-of-happiness.jpg|Cover of Blueprints of Happiness]] **[Blueprints of Happiness](https://www.youtube.com/watch?v=Vd22QjZAygc&t=120s).** *Coming soon…*
+- ![[blueprints-of-happiness.jpg|Cover of Blueprints of Happiness]] **[Blueprints of Happiness](https://www.youtube.com/watch?v=Vd22QjZAygc&t=120s).** *A solo acoustic guitar record played, recorded, and mixed by me.*
+
+### Track notes
+
+I wanted to capture the moments when I sit down with a guitar just to blow some steam off. The instrument was an Eastman E1OM tuned to D-natural, recorded with a matched pair of Rode NT5s placed at my ears.
+
+#### Nature Boy
+
+“Bittersweet again,” said Nature Boy. Getting sober, life punched him in the face. He crossed the bridge with a hurting toe, in sandals he had not worn in yet. Wandering towards home, he overheard a quiet samba rhythm.
+
+#### The Girl from Ipanema
+
+“Bum… bu-bum. Tchi-ka, tchi-ka, tum-tá” came from a little riverside workshop. Inside, a tall and slender woman was drawing on a board with chalk, one line and then another, her forearm white with it. She hummed along without knowing she was doing it. She stepped out towards Nature Boy and never looked at him. The Boy continued home.
+
+#### Persian Rug / Omission (Medley)
+
+He woke up the next morning to a mellow birdsong—one he had never heard before. Opening his eyes, he saw a red bird singing in his window. When he moved closer the bird flocked away. He smirked and went straight to his loom. He had once heard a legend: if a hungover boy constructs a Persian rug with a pattern not yet known to man, he might acquire the ability to lift off the ground. Calm and collected, he made the carpet with great passion. He wanted to go after the bird.
+
+#### The Red One
+
+At last the carpet took flight. With some level of control he could get the vehicle just above the canopy. He glanced into the distance and spotted the bird and began approaching, hanging on a light breeze of dawn. When he caught up, the bird led him a dance above the treetops. A feint left, then right—he followed, overshot, hauled the carpet around and came back too wide. For a while they braided the air, the boy correcting, the bird drifting, the distance between them holding. Then the bird dipped, and the canopy closed green above it.
+
+He went looking for the bird. Flying towards a little glade, he saw a wiry and sunburnt young man with a rope on his belt. The next moment the red bird landed on his gauntlet and let out a charming chirp. The Boy hovered over them for a while, then glided home in sorrow.
+
+#### Love Is a Beautiful Thing (Vulfpeck)
+
+#### Blimp
+
+Lying on a bed of straw, the Boy said, “Let’s build something magnificent!” He sketched up an airship, addressing the design problems of his rug he wanted to reach for the sky. He stitched together rugs relentlessly to form a whale-like shape, attached a steel frame, and covered the cabin with sen ash panels, leaving out the windows. A steam engine was responsible for rotating three winged propellers. The fire also warmed the air, thus lifting the airframe. He called it Destiny’s Bounty.
+
+With his sketches piled up, he boarded the hefty wings. While chasing the bird, he saw a mountain range emerge in baby blue out of the corner of his eye. Steam whistled and air parted as the ship cut through it.
+
+#### Blue Monk
+
+Time stopped for a while in the monotonous sky. The occasional stray winds or passing vultures couldn’t bother Nature Boy. Approaching the mountains he saw a wolf pack trying to hunt down a mountain goat—with no success, the hill was quite steep there. On the spine of a mountain he saw a slight blue cottage. He approached and put down his vehicle there. He opened the airlock and there he was—the Blue Monk. An old and rugged saint black as a crow, a full, rounded beard hugged his face radiating soft bay rum. He was biting on a cigar thick as a thumb. A smoky vanilla tickled the Boy’s nose as the Monk lured him in.
+
+Inside he poured him an ounce of spirit and grabbed a seven-stringed instrument. “I will play you the blues, my Boy,” the Monk said as he invented a soft walk on the low strings first. Every step carried a heartbeat. While he layered some heavy dominants, his robe started to flicker. The melody came pure on top. The Monk hovered above the ground as the groove swallowed his soul. The Boy’s face lit up—maybe this was it. But one singular cell of his soul felt otherwise.
+
+#### Swan Song (Dream Sequence)
+
+He waved goodbye from his airship to the Monk. He was gifted a crate of whiskey and an old spruce top guitar. Sparkles of a firework show surfaced in the distance, so he steered the airship that way. Practicing the minor blues scale he slowly fell asleep floating in the amber sky…
+
+#### Day and Age (World’s Fair)
+
+He woke up to loud drums, horns and beaming spotlights—a fair was ahead. He landed the ship on a meadow and headed towards the huge tents. A glowing sign greeted him with hefty capital letters: “WORLD’S FAIR”. As he strolled inside he saw long-lost magic along with compact and slender devices with a metallic shine. Every nation was building towards something greater, sometimes off by a notch, sometimes by a mile. He continued as a nickel samovar whistled through the air above his head.
 
 ## Album reviews
 
