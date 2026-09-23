@@ -64,7 +64,7 @@ He woke up to loud drums, horns and beaming spotlights—a fair was ahead. He la
 ---
 ## Album reviews
 
-This list contains short descriptions and reviews for some of my favourite or previously liked records. 
+This list contains short descriptions and reviews about some of my favourite records. There will be no grading - most of it is great. Also the websites shuffles the albums, so you get a higher chance of cool random exploration.
 
 - ![[mercy-mercy-mercy.jpg|Cover of Mercy, Mercy, Mercy! Live at “The Club”]] **Cannonball Adderley Quintet — [Mercy, Mercy, Mercy! Live at “The Club”](https://en.wikipedia.org/wiki/Mercy%2C_Mercy%2C_Mercy%21_Live_at_%22The_Club%22).** *Coming soon…*
 - ![[elp-elp.jpg|Cover of Emerson, Lake & Palmer]] **Emerson, Lake & Palmer — [Emerson, Lake & Palmer](https://en.wikipedia.org/wiki/Emerson,_Lake_%26_Palmer_(album)).** *Coming soon…*
