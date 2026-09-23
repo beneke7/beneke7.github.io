@@ -121,8 +121,16 @@ html[data-theme="light"] { filter: invert(1) hue-rotate(180deg); }
 .top-nav a:hover:not([aria-current="page"]) { background: rgb(255 255 255 / 9%); }
 .top-nav a[aria-current="page"] { color: #8ecbff; border-color: #8ecbff; background: transparent; }
 .top-nav a:focus-visible { outline: 2px solid #8ecbff; outline-offset: 2px; }
-header { padding: .35rem 0 0; }
-.theme-switch { display: flex; justify-content: flex-end; gap: .25rem; margin: 0; }
+header { position: relative; padding: .35rem 0 1.3rem; }
+.theme-switch {
+  position: absolute;
+  top: calc(100% - 1.3rem);
+  right: 0;
+  display: flex;
+  justify-content: flex-end;
+  gap: .25rem;
+  margin: 0;
+}
 .theme-switch button {
   min-width: 1.8rem;
   padding: .08em .25em;
