@@ -7,7 +7,7 @@ title: Music
 
 ## My record
 
-Cover, title, and a short note will go here.
+- ![[blueprints-of-happiness.jpg|Cover of Blueprints of Happiness]] **[Blueprints of Happiness](https://www.youtube.com/watch?v=Vd22QjZAygc&t=120s).** *Add a one-sentence note about the record.*
 
 ## Album reviews
 
