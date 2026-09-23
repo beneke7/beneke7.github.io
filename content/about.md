@@ -6,6 +6,4 @@ I am Benedek. I like:
 - sex
 - physics
 - tube amps
-
-
 --- 
