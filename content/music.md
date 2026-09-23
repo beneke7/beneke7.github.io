@@ -7,7 +7,7 @@ title: Music
 
 ## My music
 
-[**Mercy Deluxe session**] coming soon ...
+[**Mercy Deluxe session**]() coming soon ...
 
 - ![[blueprints-of-happiness.jpg|Cover of Blueprints of Happiness]]  **[Blueprints of Happiness](https://www.youtube.com/watch?v=Vd22QjZAygc&t=120s).** *A solo acoustic guitar record played, recorded, and mixed by me.*
 
