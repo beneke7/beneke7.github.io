@@ -1,12 +1,15 @@
 from datetime import date
 from html import escape
+from html.parser import HTMLParser
 from itertools import groupby
 from pathlib import Path
 import hashlib
 import os
+import posixpath
 import re
 import shutil
 import subprocess
+from urllib.parse import urlsplit, urlunsplit
 
 ROOT = Path(__file__).resolve().parent
 CONTENT = ROOT / "content"
@@ -231,6 +234,7 @@ def render_page(output, title, active, body, metadata, version):
 
 def build_posts(version):
     posts = []
+    link_sources = []
     for source in (CONTENT / "posts").glob("*.md"):
         if source.name.startswith("_"):
             continue
@@ -245,12 +249,86 @@ def build_posts(version):
         if not re.search(r"<h1\b", body):
             body = f"<h1>{escape(title)}</h1>\n{body}"
         render_page(output, title, "blog", body, {"stars": "dim"}, version)
+        link_sources.append((output, body))
         posts.append((published, title, output))
     generated = {output.name for _, _, output in posts}
     for stale in (ROOT / "blog").glob("*.html"):
         if stale.name not in generated:
             stale.unlink()
-    return sorted(posts, reverse=True)
+    return sorted(posts, reverse=True), link_sources
+
+
+class ContentLinks(HTMLParser):
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.links = []
+        self.anchor = None
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        if tag == "a":
+            self.anchor = {"href": attrs.get("href", ""), "text": [], "alt": [], "image": False}
+        elif tag == "img" and self.anchor is not None:
+            self.anchor["image"] = True
+            if attrs.get("alt"):
+                self.anchor["alt"].append(attrs["alt"])
+
+    def handle_data(self, data):
+        if self.anchor is not None:
+            self.anchor["text"].append(data)
+
+    def handle_endtag(self, tag):
+        if tag == "a" and self.anchor is not None:
+            text = " ".join("".join(self.anchor["text"]).split())
+            label = text or " ".join(self.anchor["alt"])
+            self.links.append((self.anchor["href"], label, self.anchor["image"] and not text))
+            self.anchor = None
+
+
+def links_for_site(sources):
+    links = []
+    for source, body in sources:
+        parser = ContentLinks()
+        parser.feed(body)
+        for href, label, image_only in parser.links:
+            if not href:
+                continue
+            parts = urlsplit(href)
+            if parts.scheme or parts.netloc:
+                target = href
+            else:
+                path = parts.path or source.as_posix()
+                if path.startswith("/"):
+                    target_path = posixpath.normpath(path.lstrip("/"))
+                else:
+                    target_path = posixpath.normpath(posixpath.join(source.parent.as_posix(), path))
+                query = "" if re.fullmatch(r"v=[\w.-]+", parts.query) else parts.query
+                target = urlunsplit(("", "", relative_url(Path(target_path), Path("links.html")), query, parts.fragment))
+            links.append((target, label, image_only))
+
+    text_targets = {target for target, label, image_only in links if label and not image_only}
+    result = []
+    seen = set()
+    for target, label, image_only in links:
+        if image_only and label.casefold().startswith("cover of "):
+            continue
+        if image_only and target in text_targets:
+            continue
+        key = (target, label)
+        if key not in seen:
+            result.append((target, label))
+            seen.add(key)
+    return result
+
+
+def append_collected_links(body, links):
+    items = "\n".join(
+        f'<li><a href="{escape(target, quote=True)}">{escape(label)}</a></li>'
+        for target, label in links
+    )
+    addition = f"\n<ul>\n{items}\n</ul>" if items else ""
+    pattern = re.compile(r"(<h2\b[^>]*>\s*Other\s*</h2>)(.*?)(?=<h[1-2]\b|\Z)", re.I | re.S)
+    return pattern.sub(lambda match: match.group(1) + match.group(2) + addition, body, count=1)
 
 
 def main():
@@ -258,7 +336,8 @@ def main():
         raise SystemExit("Pandoc is required to build the site.")
     copy_media()
     version = cache_version()
-    posts = build_posts(version)
+    posts, post_link_sources = build_posts(version)
+    page_link_sources = []
     for slug in PAGES:
         source = CONTENT / f"{slug}.md"
         metadata, markdown = read_document(source)
@@ -274,6 +353,10 @@ def main():
                 )
                 year_sections.append(f"<h2>{year}</h2><ul>{links}</ul>")
             body += f'\n<section class="post-list">{"".join(year_sections)}</section>'
+        if slug == "links":
+            body = append_collected_links(body, links_for_site(page_link_sources + post_link_sources))
+        else:
+            page_link_sources.append((output, body))
         title = document_title(metadata, markdown, slug)
         render_page(output, title, slug, body, metadata, version)
     (ROOT / "about.html").unlink(missing_ok=True)

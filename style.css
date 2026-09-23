@@ -17,6 +17,14 @@ body {
 }
 a, a:visited { color: #f1f1f1; }
 a:hover { color: #c9c9c9; }
+.markdown-content a, .markdown-content a:visited,
+.markdown-content a:hover { color: var(--nav-current); }
+html[data-theme="light"] .markdown-content a:not(:has(img)),
+html[data-theme="light"] .markdown-content a:not(:has(img)):visited,
+html[data-theme="light"] .markdown-content a:not(:has(img)):hover {
+  color: #8f2e3e;
+  filter: invert(1) hue-rotate(180deg);
+}
 h1, h2 { font-family: Georgia, "Times New Roman", serif; }
 h1 { margin: .1rem 0 1.2rem; font-size: 1.9rem; }
 html[data-theme="light"] { filter: invert(1) hue-rotate(180deg); }
