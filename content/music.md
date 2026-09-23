@@ -1,7 +1,8 @@
 ---
 title: Music
 ---
-# Music
+# Music 
+*"Can music save your mortal soul?"
 
 ![[trumpet.jpg]]
 
