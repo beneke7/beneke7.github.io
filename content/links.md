@@ -4,7 +4,7 @@ planet: ice-world
 ---
 # Links
 
-The very short list will be soon expanded, with little excerpts so that you dont have to click every time
+The very short list will be soon expanded. I'll also add little excerpts so that you dont have to click every time
 
 - [mesh.](https://www.growmesh.io/)
 - [meshapplied](https://meshapplied.com/)
@@ -14,6 +14,7 @@ The very short list will be soon expanded, with little excerpts so that you dont
 
 - [Gwern](https://gwern.net/changelog)
 - [Grynaeus András (HU)](https://grynaeus.blog.hu/)
+
 ## Youtube channels
 
 - [DGy (HU)](https://www.youtube.com/@dgyegyetemieloadasai7124)

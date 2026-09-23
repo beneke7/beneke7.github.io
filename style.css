@@ -229,6 +229,8 @@ footer { margin-top: 3rem; padding: 1rem 0 0; border-top: 3px solid #fff; }
   overflow: hidden;
   border-radius: 50%;
 }
+.space.planet-ice-world picture, .space.planet-ice-world .planet-gif,
+.space.planet-gas-giant picture, .space.planet-gas-giant .planet-gif { left: auto; right: -35vw; }
 .space .planet-gif { image-rendering: pixelated; }
 html[data-theme="light"] .space.planet-original .planet-gif,
 html[data-theme="light"] .space.planet-original picture { filter: hue-rotate(-180deg) invert(1); }
@@ -249,10 +251,14 @@ main, header, footer { text-shadow: 0 1px 4px #000; }
 }
 @media (max-width: 800px) {
   .space picture, .space .planet-gif { left: -38vw; bottom: -28vh; width: 90vw; }
+  .space.planet-ice-world picture, .space.planet-ice-world .planet-gif,
+  .space.planet-gas-giant picture, .space.planet-gas-giant .planet-gif { left: auto; right: -38vw; }
 }
 @media (max-width: 600px) {
   body { padding: 1rem 1rem 2rem; }
   .top-nav { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   h1 { font-size: 1.65rem; }
   .space picture, .space .planet-gif { left: -42vw; bottom: -25vh; width: 95vw; }
+  .space.planet-ice-world picture, .space.planet-ice-world .planet-gif,
+  .space.planet-gas-giant picture, .space.planet-gas-giant .planet-gif { left: auto; right: -42vw; }
 }
