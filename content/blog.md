@@ -1,6 +1,6 @@
 ---
 title: Blog
-stars: dim
+planet: neutron-star
 ---
 # Blog
 

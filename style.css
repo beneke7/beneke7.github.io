@@ -11,13 +11,13 @@ body {
   padding: 1.25rem 1.5rem 3rem;
   background: transparent;
   color: #f1f1f1;
-  font: 132%/1.55 Georgia, "Times New Roman", serif;
+  font: 125%/1.55 Georgia, "Times New Roman", serif;
   text-align: center;
 }
 a, a:visited { color: #f1f1f1; }
 a:hover { color: #c9c9c9; }
 h1, h2 { font-family: Georgia, "Times New Roman", serif; }
-h1 { margin: .1rem 0 1.2rem; font-size: 2rem; }
+h1 { margin: .1rem 0 1.2rem; font-size: 1.9rem; }
 html[data-theme="light"] { filter: invert(1) hue-rotate(180deg); }
 .markdown-content { text-align: justify; hyphens: auto; line-height: 1.6; }
 .markdown-content > :first-child { margin-block-start: 0; }
@@ -104,9 +104,9 @@ html[data-theme="light"] { filter: invert(1) hue-rotate(180deg); }
 .top-nav {
   display: grid;
   grid-template-columns: repeat(6, minmax(0, 1fr));
-  gap: 3px;
+  gap: .4rem;
   padding: 0;
-  font: 700 1.45rem/1.15 Georgia, "Times New Roman", serif;
+  font: 700 1.38rem/1.15 Georgia, "Times New Roman", serif;
   font-variant: small-caps;
   letter-spacing: .1em;
 }
@@ -115,13 +115,14 @@ html[data-theme="light"] { filter: invert(1) hue-rotate(180deg); }
   display: grid;
   min-height: 3rem;
   place-items: center;
-  border: 2px dashed #777;
+  border: 0;
+  border-bottom: 3px solid #777;
   text-decoration: none;
 }
 .top-nav a:hover:not([aria-current="page"]) { background: rgb(255 255 255 / 9%); }
 .top-nav a[aria-current="page"] { color: #8ecbff; border-color: #8ecbff; background: transparent; }
 .top-nav a:focus-visible { outline: 2px solid #8ecbff; outline-offset: 2px; }
-header { position: relative; padding: .35rem 0 1.3rem; }
+header { position: relative; padding: .35rem 0 1.55rem; }
 .theme-switch {
   position: absolute;
   top: calc(100% - 1.3rem);
@@ -232,6 +233,6 @@ main, header, footer { text-shadow: 0 1px 4px #000; }
 @media (max-width: 600px) {
   body { padding: 1rem 1rem 2rem; }
   .top-nav { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  h1 { font-size: 1.75rem; }
+  h1 { font-size: 1.65rem; }
   .space picture, .space .planet-gif { left: -42vw; bottom: -25vh; width: 95vw; }
 }

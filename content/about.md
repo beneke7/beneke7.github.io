@@ -8,3 +8,5 @@ I am Benedek. I like:
 - tube amps
 
 --- 
+
+check out the latest blog (piano modelling)[[2026-09-25-slug]]

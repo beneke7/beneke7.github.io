@@ -2,7 +2,7 @@
 
 Open this folder as an Obsidian vault. Edit the Markdown pages here, then run `python3 build.py` from the repository root to regenerate the HTML served by GitHub Pages. Local generation requires Pandoc.
 
-The root `.html` files and `blog/` pages are generated output; edit the Markdown sources instead.
+The root `.html` files and `blog/` pages are generated output; edit the Markdown sources instead. Markdown and generated HTML use UTF-8, so Hungarian characters such as `áéíóöőúüű` can be typed directly. Pages default to English; add `lang: hu` to frontmatter on Hungarian-language pages for language-aware pronunciation and hyphenation.
 `about.md` generates the site root (`index.html`); there is no separate index page.
 
 Use `#` through `######` for titles and section headings. Create a post as `posts/YYYY-MM-DD-short-title.md`, starting with:

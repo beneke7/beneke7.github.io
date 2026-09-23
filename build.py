@@ -16,6 +16,7 @@ PLANETS = {
     "original": "pixel-planet",
     "gas-giant": "gas-giant",
     "ice-world": "ice-world",
+    "neutron-star": "neutron-star",
 }
 
 
@@ -162,10 +163,11 @@ def render_page(output, title, active, body, metadata, version):
         planet_markup = f'''<img class="planet-gif" src="{versioned_url(gif, output, version)}"{light_sources} alt="">
     <picture><img src="{versioned_url(poster, output, version)}"{poster_light_sources} alt=""></picture>'''
     html_title = title if active == "about" else f"{title} — Beneke’s corner of the web"
+    language = escape(metadata.get("lang", "en"))
     mathjax = '<script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>' if 'class="math ' in body else ""
     theme_script = '''<script>try { const theme = localStorage.getItem("site-theme"); if (theme === "light" || theme === "dark") document.documentElement.dataset.theme = theme; } catch {}</script>'''
     document = f'''<!doctype html>
-<html lang="en" data-theme="dark">
+<html lang="{language}" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
