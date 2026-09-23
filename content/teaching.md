@@ -19,3 +19,5 @@ Hungarian formula collection (official for the pre-competition first round):
 Contact me for further advice and material!
 
 ---
+
+# Method of moving points
