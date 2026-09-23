@@ -2,4 +2,4 @@
 title: Teaching
 stars: dim
 ---
-# Teaching
+# For physics olympiad aspirants

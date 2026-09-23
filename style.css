@@ -175,7 +175,7 @@ footer { margin-top: 3rem; padding: 1rem 0 0; border-top: 3px solid #fff; }
 }
 .space .planet-gif { image-rendering: pixelated; }
 html[data-theme="light"] .space.planet-original .planet-gif,
-html[data-theme="light"] .space.planet-original picture { filter: invert(1) hue-rotate(180deg); }
+html[data-theme="light"] .space.planet-original picture { filter: hue-rotate(-180deg) invert(1); }
 .space picture { display: none; }
 .space img {
   display: block;
