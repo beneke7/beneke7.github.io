@@ -16,5 +16,6 @@ Hungarian formula collection (official for the pre-competition first round):
 
 [Kevin Zhou study guides](https://knzhou.github.io/)
 
+Contact me for further advice and material!
 
-Contact me for further advice!
+---
