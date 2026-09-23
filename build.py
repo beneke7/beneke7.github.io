@@ -12,6 +12,7 @@ ROOT = Path(__file__).resolve().parent
 CONTENT = ROOT / "content"
 NAV = (("About", "about"), ("Blog", "blog"), ("Projects", "projects"),
        ("Teaching", "teaching"), ("Music", "music"), ("Links", "links"))
+PAGE_TARGETS = {name.casefold(): slug for label, slug in NAV for name in (label, slug)}
 PAGES = ("about", "blog", "projects", "teaching", "music", "links")
 PLANETS = {
     "original": "pixel-planet",
@@ -80,8 +81,8 @@ def convert_obsidian_syntax(text, output):
             target = target.removesuffix(".md")
             if target.startswith("posts/"):
                 url = relative_url(Path("blog") / f"{Path(target).name}.html", output)
-            elif target in PAGES:
-                url = relative_url(page_output(target), output)
+            elif target.casefold() in PAGE_TARGETS:
+                url = relative_url(page_output(PAGE_TARGETS[target.casefold()]), output)
             else:
                 return match.group(0)
         return f"[{label}]({url})"
@@ -130,6 +131,8 @@ def render_page(output, title, active, body, metadata, version):
     prefix = os.path.relpath(ROOT, ROOT / output.parent).replace(os.sep, "/")
     prefix = "" if prefix == "." else f"{prefix}/"
     content_class = "" if active == "blog" else " page-content"
+    if active == "music":
+        content_class += " music-page"
     nav_items = []
     for label, slug in NAV:
         current = ' aria-current="page"' if active == slug else ""
