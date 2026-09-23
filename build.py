@@ -13,9 +13,9 @@ NAV = (("About", "about"), ("Projects", "projects"), ("Blog", "blog"),
        ("Teaching", "teaching"), ("Music", "music"), ("Links", "links"))
 PAGES = ("index", "about", "blog", "projects", "teaching", "music", "links")
 PLANETS = {
-    "original": ("pixel-planet", 1 / 16),
-    "gas-giant": ("gas-giant", 1 / 16),
-    "ice-world": ("ice-world", 1 / 16),
+    "original": ("pixel-planet", "gif"),
+    "gas-giant": ("gas-giant", "webm"),
+    "ice-world": ("ice-world", "webm"),
 }
 
 
@@ -138,14 +138,16 @@ def render_page(output, title, active, body, metadata, version):
         classes.append("dim-stars")
     stars = "\n".join(f'<span class="pixel-star star-{letter}"></span>' for letter in "abcdefg")
     planet_markup = ""
-    planet_credit = ""
     if planet in PLANETS:
-        asset, speed = PLANETS[planet]
+        asset, format = PLANETS[planet]
         poster = Path("assets") / f"{asset}.png"
-        planet_markup = f'''<video class="planet-video" data-src="{versioned_url(Path('assets') / f'{asset}.webm', output, version)}" data-speed="{speed}" muted loop playsinline preload="auto"
+        if format == "gif":
+            planet_markup = f'''<img class="planet-gif" src="{versioned_url(Path('assets') / f'{asset}.gif', output, version)}" alt="">
+    <picture><img src="{versioned_url(poster, output, version)}" alt=""></picture>'''
+        else:
+            planet_markup = f'''<video class="planet-video" data-src="{versioned_url(Path('assets') / f'{asset}.webm', output, version)}" data-speed="0.0625" muted loop playsinline preload="auto"
       poster="{versioned_url(poster, output, version)}" aria-hidden="true"></video>
     <picture><img src="{versioned_url(poster, output, version)}" alt=""></picture>'''
-        planet_credit = f' Planet by <a href="https://github.com/Deep-Fold/PixelPlanets">PixelPlanets</a>.'
     html_title = title if active == "index" else f"{title} — Beneke’s corner of the web"
     document = f'''<!doctype html>
 <html lang="en">
@@ -168,7 +170,7 @@ def render_page(output, title, active, body, metadata, version):
   <main class="markdown-content">
     {body}
   </main>
-  <footer><small>Hand-written HTML. No tracking, no fuss.{planet_credit}</small></footer>
+  <footer><small>vive la guerre éternelle — planets by <a href="https://github.com/Deep-Fold/PixelPlanets">PixelPlanets</a>.</small></footer>
 </body>
 </html>
 '''
