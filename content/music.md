@@ -13,7 +13,7 @@ Some crazy new dlc to life, you have to check it out!
 
 [**Mercy Deluxe session**]() coming soon ...
 
-- ![[blueprints-of-happiness.jpg|Cover of Blueprints of Happiness]]  **[Blueprints of Happiness](https://www.youtube.com/watch?v=Vd22QjZAygc&t=120s).** A solo acoustic guitar record played, recorded, and mixed by me. I wanted to capture the moments when I sit down with a guitar just to blow some steam off. The instrument was an Eastman E1OM tuned to D-natural, recorded with a matched pair of Rode NT5s placed at my ears.
+- ![[blueprints-of-happiness.jpg|Cover of Blueprints of Happiness]]  **[Blueprints of Happiness](https://www.youtube.com/watch?v=Vd22QjZAygc&t=120s).** A solo acoustic guitar record played, recorded, and mixed by me. I wanted to capture the moments when I sit down with a guitar just to blow some steam off. The instrument was an Eastman E1OM tuned to D-natural, recorded with a matched pair of Rode NT5s placed at my ears. I also feel like that a lot of times, it is very hard for non musicians to put an instrumental album in context. For this reason I wrote a short story connecting every track of the record. 
 
 ### Story of the album
 
