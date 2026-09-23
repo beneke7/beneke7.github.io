@@ -18,7 +18,10 @@ body {
 a, a:visited { color: #f1f1f1; }
 a:hover { color: #c9c9c9; }
 .markdown-content a, .markdown-content a:visited,
-.markdown-content a:hover { color: var(--nav-current); }
+.markdown-content a:hover {
+  color: var(--nav-current);
+  text-shadow: none;
+}
 html[data-theme="light"] .markdown-content a:not(:has(img)),
 html[data-theme="light"] .markdown-content a:not(:has(img)):visited,
 html[data-theme="light"] .markdown-content a:not(:has(img)):hover {
