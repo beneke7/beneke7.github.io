@@ -80,8 +80,11 @@ def convert_obsidian_syntax(text, output):
             url = target
         else:
             target = target.removesuffix(".md")
-            if target.startswith("posts/"):
-                url = relative_url(Path("blog") / f"{Path(target).name}.html", output)
+            if target.casefold() in POST_TARGETS:
+                destination, post_title = POST_TARGETS[target.casefold()]
+                url = relative_url(destination, output)
+                if not separator:
+                    label = post_title
             elif target.casefold() in PAGE_TARGETS:
                 url = relative_url(page_output(PAGE_TARGETS[target.casefold()]), output)
             else:
@@ -118,6 +121,20 @@ def document_title(metadata, markdown, fallback):
         return metadata["title"]
     heading = re.search(r"^#\s+(.+?)\s*#*\s*$", markdown, re.M)
     return heading.group(1) if heading else fallback.replace("-", " ").title()
+
+
+def blog_post_targets():
+    targets = {}
+    for source in (CONTENT / "posts").glob("*.md"):
+        metadata, markdown = read_document(source)
+        title = document_title(metadata, markdown, source.stem)
+        destination = Path("blog") / f"{source.stem}.html"
+        for name in (source.stem, f"posts/{source.stem}", title):
+            targets[name.casefold()] = (destination, title)
+    return targets
+
+
+POST_TARGETS = blog_post_targets()
 
 
 def relative_url(target, output):
