@@ -13,9 +13,9 @@ NAV = (("About", "about"), ("Projects", "projects"), ("Blog", "blog"),
        ("Teaching", "teaching"), ("Music", "music"), ("Links", "links"))
 PAGES = ("index", "about", "blog", "projects", "teaching", "music", "links")
 PLANETS = {
-    "original": "pixel-planet",
-    "gas-giant": "gas-giant",
-    "ice-world": "ice-world",
+    "original": ("pixel-planet", 1),
+    "gas-giant": ("gas-giant", 1),
+    "ice-world": ("ice-world", 1),
 }
 
 
@@ -140,9 +140,11 @@ def render_page(output, title, active, body, metadata, version):
     planet_markup = ""
     planet_credit = ""
     if planet in PLANETS:
-        asset = PLANETS[planet]
+        asset, speed = PLANETS[planet]
         poster = Path("assets") / f"{asset}.png"
-        planet_markup = f'''<picture><img src="{versioned_url(poster, output, version)}" alt=""></picture>'''
+        planet_markup = f'''<video class="planet-video" data-src="{versioned_url(Path('assets') / f'{asset}.webm', output, version)}" data-speed="{speed}" muted loop playsinline preload="auto"
+      poster="{versioned_url(poster, output, version)}" aria-hidden="true"></video>
+    <picture><img src="{versioned_url(poster, output, version)}" alt=""></picture>'''
         planet_credit = f' Planet by <a href="https://github.com/Deep-Fold/PixelPlanets">PixelPlanets</a>.'
     html_title = title if active == "index" else f"{title} — Beneke’s corner of the web"
     document = f'''<!doctype html>
