@@ -2,7 +2,7 @@
 title: Music
 ---
 # Music 
-*"Can music save your mortal soul?"
+*"Can music save your mortal soul?"*
 
 ![[trumpet.jpg]]
 
