@@ -197,7 +197,7 @@ def render_page(output, title, active, body, metadata, version):
   <main class="markdown-content{content_class}">
     {body}
   </main>
-  <footer><small>vive la guerre éternelle — planets by <a href="https://github.com/Deep-Fold/PixelPlanets">PixelPlanets</a>.</small></footer>
+  <footer><small><em>vive la guerre éternelle</em><span class="footer-star" aria-hidden="true"></span>planets by <a href="https://github.com/Deep-Fold/PixelPlanets">PixelPlanets</a>.</small></footer>
 </body>
 </html>
 '''

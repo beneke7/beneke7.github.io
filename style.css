@@ -153,6 +153,17 @@ header { position: relative; padding: .35rem 0 1.55rem; }
 .theme-switch button[aria-pressed="true"] { border-color: #fff; }
 .theme-switch button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 footer { margin-top: 3rem; padding: 1rem 0 0; border-top: 3px solid #fff; }
+.footer-star {
+  display: inline-block;
+  width: 2px;
+  height: 2px;
+  margin: 0 1.1em;
+  vertical-align: middle;
+  background: currentColor;
+  box-shadow: 0 -8px currentColor, 0 -4px currentColor, 0 4px currentColor, 0 8px currentColor,
+    -8px 0 currentColor, -4px 0 currentColor, 4px 0 currentColor, 8px 0 currentColor,
+    -4px -4px currentColor, 4px -4px currentColor, -4px 4px currentColor, 4px 4px currentColor;
+}
 .space {
   position: fixed;
   z-index: -1;
@@ -221,6 +232,8 @@ footer { margin-top: 3rem; padding: 1rem 0 0; border-top: 3px solid #fff; }
 .space .planet-gif { image-rendering: pixelated; }
 html[data-theme="light"] .space.planet-original .planet-gif,
 html[data-theme="light"] .space.planet-original picture { filter: hue-rotate(-180deg) invert(1); }
+html[data-theme="light"] .space.planet-ice-world .planet-gif,
+html[data-theme="light"] .space.planet-ice-world picture { filter: brightness(.75); }
 .space picture { display: none; }
 .space img {
   display: block;
