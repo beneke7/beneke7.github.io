@@ -7,7 +7,9 @@ const setTheme = (theme) => {
   });
   document.querySelectorAll("[data-dark-src]").forEach((image) => {
     const source = image.dataset[theme === "light" ? "lightSrc" : "darkSrc"];
-    if (source && image.getAttribute("src") !== source) image.src = source;
+    if (window.matchMedia("(max-width: 800px), (prefers-reduced-motion: reduce)").matches && image.classList.contains("planet-gif")) return;
+    const attribute = image.tagName === "SOURCE" ? "srcset" : "src";
+    if (source && image.getAttribute(attribute) !== source) image.setAttribute(attribute, source);
   });
   try {
     localStorage.setItem("site-theme", theme);
@@ -18,6 +20,17 @@ themeButtons.forEach((button) => {
   button.addEventListener("click", () => setTheme(button.dataset.themeChoice));
 });
 setTheme(document.documentElement.dataset.theme || "dark");
+
+const flickerStars = document.querySelectorAll(".space .star-k, .space .star-l, .space .star-m");
+if (flickerStars.length && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  const flickerRandomStar = () => {
+    const star = flickerStars[Math.floor(Math.random() * flickerStars.length)];
+    star.classList.add("flicker");
+    window.setTimeout(() => star.classList.remove("flicker"), 120);
+    window.setTimeout(flickerRandomStar, 7500 + Math.random() * 5000);
+  };
+  window.setTimeout(flickerRandomStar, 3000 + Math.random() * 7000);
+}
 
 const musicPage = document.querySelector(".music-page");
 if (musicPage) {

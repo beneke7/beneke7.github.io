@@ -248,6 +248,36 @@ footer { margin-top: 3rem; padding: 1rem 0 0; border-top: 3px solid #fff; }
 .star-h { top: 38%; left: 7%; }
 .star-i { top: 69%; right: 6%; }
 .star-j { top: 82%; left: 38%; }
+.pixel-star.star-k, .pixel-star.star-l, .pixel-star.star-m {
+  display: none;
+  width: 3px;
+  height: 3px;
+  transition: opacity 100ms steps(2, end);
+}
+.star-k { top: 19%; left: .8rem; }
+.star-l { top: 52%; right: .8rem; }
+.star-m { bottom: 16%; left: .8rem; }
+html[data-theme="light"] .space .star-k,
+html[data-theme="light"] .space .star-l,
+html[data-theme="light"] .space .star-m { display: block; }
+html[data-theme="light"] .space .star-k {
+  box-shadow: 0 -8px currentColor, 0 -4px currentColor, 0 4px currentColor, 0 8px currentColor,
+    -8px 0 currentColor, -4px 0 currentColor, 4px 0 currentColor, 8px 0 currentColor,
+    -4px -4px currentColor, 4px -4px currentColor, -4px 4px currentColor, 4px 4px currentColor;
+}
+html[data-theme="light"] .space .star-l {
+  box-shadow: 0 -8px currentColor, 0 -4px currentColor, 0 4px currentColor, 0 8px currentColor,
+    -8px 0 currentColor, -4px 0 currentColor, 4px 0 currentColor, 8px 0 currentColor,
+    -4px -4px currentColor, 4px -4px currentColor, -4px 4px currentColor, 4px 4px currentColor,
+    -8px -8px currentColor, 8px -8px currentColor, -8px 8px currentColor, 8px 8px currentColor;
+}
+html[data-theme="light"] .space .star-m {
+  box-shadow: 0 -8px currentColor, 0 -4px currentColor, 0 4px currentColor, 0 8px currentColor,
+    -8px 0 currentColor, -4px 0 currentColor, 4px 0 currentColor, 8px 0 currentColor,
+    -4px -4px currentColor, 4px -4px currentColor, -4px 4px currentColor, 4px 4px currentColor,
+    -2px -6px currentColor, 2px -6px currentColor, -2px 6px currentColor, 2px 6px currentColor;
+}
+html[data-theme="light"] .space:not(.dim-stars) .pixel-star.flicker { opacity: .2; }
 .space::before {
   position: absolute;
   z-index: 2;
@@ -275,8 +305,23 @@ footer { margin-top: 3rem; padding: 1rem 0 0; border-top: 3px solid #fff; }
     radial-gradient(1px 1px at 97% 35%, #fff 99%, transparent);
   content: "";
 }
-.space.dim-stars .pixel-star, .space.dim-stars::before { opacity: .18; }
-.space picture, .space .planet-gif {
+.space::after {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 11% 33%, #fff 99%, transparent),
+    radial-gradient(2px 2px at 26% 61%, #fff 99%, transparent),
+    radial-gradient(1px 1px at 41% 14%, #fff 99%, transparent),
+    radial-gradient(1px 1px at 66% 36%, #fff 99%, transparent),
+    radial-gradient(2px 2px at 77% 73%, #fff 99%, transparent),
+    radial-gradient(1px 1px at 91% 18%, #fff 99%, transparent);
+  content: "";
+  opacity: 0;
+}
+html[data-theme="light"] .space::after { opacity: .75; }
+.space.dim-stars .pixel-star, .space.dim-stars::before, .space.dim-stars::after { opacity: .18; }
+.space picture {
   position: absolute;
   z-index: 4;
   left: -35vw;
@@ -286,14 +331,11 @@ footer { margin-top: 3rem; padding: 1rem 0 0; border-top: 3px solid #fff; }
   overflow: hidden;
   border-radius: 50%;
 }
-.space.planet-ice-world picture, .space.planet-ice-world .planet-gif,
-.space.planet-gas-giant picture, .space.planet-gas-giant .planet-gif { left: auto; right: -35vw; }
+.space.planet-ice-world picture, .space.planet-gas-giant picture { left: auto; right: -35vw; }
 .space .planet-gif { image-rendering: pixelated; }
-html[data-theme="light"] .space.planet-original .planet-gif,
 html[data-theme="light"] .space.planet-original picture { filter: hue-rotate(-180deg) invert(1); }
-html[data-theme="light"] .space.planet-ice-world .planet-gif,
 html[data-theme="light"] .space.planet-ice-world picture { filter: brightness(.75); }
-.space picture { display: none; }
+.space picture { display: block; }
 .space img {
   display: block;
   width: 100%;
@@ -302,20 +344,31 @@ html[data-theme="light"] .space.planet-ice-world picture { filter: brightness(.7
   image-rendering: pixelated;
 }
 main, header, footer { text-shadow: 0 1px 4px #000; }
-@media (prefers-reduced-motion: reduce) {
-  .space .planet-gif { display: none; }
-  .space picture { display: block; animation: none; }
-}
 @media (max-width: 800px) {
-  .space picture, .space .planet-gif { left: -38vw; bottom: -28vh; width: 90vw; }
-  .space.planet-ice-world picture, .space.planet-ice-world .planet-gif,
-  .space.planet-gas-giant picture, .space.planet-gas-giant .planet-gif { left: auto; right: -38vw; }
+  body { font-size: 120%; }
+  .markdown-content { text-align: left; line-height: 1.65; }
+  .markdown-content img { max-width: 100%; height: auto; }
+  .markdown-content table { margin-inline: 0; }
+  .markdown-content pre { max-width: 100%; overflow-x: auto; }
+  .top-nav { font-size: 1.15rem; letter-spacing: .06em; gap: .25rem; }
+  .top-nav a { min-height: 2.75rem; }
+  .theme-switch { position: static; margin-top: .45rem; }
+  .theme-switch button { min-width: 2.75rem; min-height: 2.75rem; }
+  .space picture { left: -38vw; bottom: -28vh; width: 90vw; }
+  .space.planet-ice-world picture, .space.planet-gas-giant picture { left: auto; right: -38vw; }
 }
 @media (max-width: 600px) {
-  body { padding: 1rem 1rem 2rem; }
+  body { padding: .8rem 1rem 1.75rem; font-size: 112.5%; }
+  header { padding-bottom: .75rem; }
   .top-nav { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  h1 { font-size: 1.65rem; }
-  .space picture, .space .planet-gif { left: -42vw; bottom: -25vh; width: 95vw; }
-  .space.planet-ice-world picture, .space.planet-ice-world .planet-gif,
-  .space.planet-gas-giant picture, .space.planet-gas-giant .planet-gif { left: auto; right: -42vw; }
+  h1 { font-size: 1.6rem; }
+  .markdown-content { overflow-wrap: break-word; }
+  .markdown-content p { margin-block: .9em; }
+  .markdown-content h2, .markdown-content h3, .markdown-content h4,
+  .markdown-content h5, .markdown-content h6 { margin-top: 1.25em; }
+  .markdown-content table { max-width: 100%; }
+  .music-page ul > li { min-height: 0; margin-block: 1.2rem; }
+  .music-page ul a:has(> img) { width: clamp(6rem, 30vw, 7.5rem); margin-right: .85rem; }
+  .space picture { left: -42vw; bottom: -25vh; width: 95vw; }
+  .space.planet-ice-world picture, .space.planet-gas-giant picture { left: auto; right: -42vw; }
 }

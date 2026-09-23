@@ -147,7 +147,7 @@ def render_page(output, title, active, body, metadata, version):
         classes.extend(("planet-space", f"planet-{planet}"))
     elif metadata.get("stars") == "dim":
         classes.append("dim-stars")
-    stars = "\n".join(f'<span class="pixel-star star-{letter}"></span>' for letter in "abcdefghij")
+    stars = "\n".join(f'<span class="pixel-star star-{letter}"></span>' for letter in "abcdefghijklm")
     planet_markup = ""
     if planet in PLANETS:
         asset = PLANETS[planet]
@@ -166,8 +166,14 @@ def render_page(output, title, active, body, metadata, version):
                 f' data-dark-src="{versioned_url(poster, output, version)}"'
                 f' data-light-src="{versioned_url(light_poster, output, version)}"'
             )
-        planet_markup = f'''<img class="planet-gif" src="{versioned_url(gif, output, version)}"{light_sources} alt="">
-    <picture><img src="{versioned_url(poster, output, version)}"{poster_light_sources} alt=""></picture>'''
+        poster_source = (
+            f'<source media="(max-width: 800px), (prefers-reduced-motion: reduce)" '
+            f'srcset="{versioned_url(poster, output, version)}"{poster_light_sources}>'
+        )
+        planet_markup = f'''<picture>
+    {poster_source}
+    <img class="planet-gif" src="{versioned_url(gif, output, version)}"{light_sources} alt="">
+  </picture>'''
     html_title = title if active == "about" else f"{title} — Beneke’s corner of the web"
     language = escape(metadata.get("lang", "en"))
     mathjax = '<script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>' if 'class="math ' in body else ""
