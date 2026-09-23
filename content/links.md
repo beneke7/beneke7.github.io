@@ -10,6 +10,5 @@ planet: ice-world
 ## Blogs and papers I like
 
 - [Gwern](https://gwern.net/changelog)
-[]()
 ## Youtube channels
 
