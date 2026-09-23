@@ -1,5 +1,6 @@
 from datetime import date
 from html import escape
+from itertools import groupby
 from pathlib import Path
 import hashlib
 import os
@@ -242,12 +243,15 @@ def main():
         output = page_output(slug)
         body = convert_markdown(markdown, output)
         if slug == "blog" and posts:
-            links = "\n".join(
-                f'<li><time datetime="{published.isoformat()}">{published.isoformat()}</time> '
-                f'<a href="{versioned_url(output, Path("blog.html"), version)}">{escape(title)}</a></li>'
-                for published, title, output in posts
-            )
-            body += f"\n<section class=\"post-list\"><h2>Posts</h2><ul>{links}</ul></section>"
+            year_sections = []
+            for year, year_posts in groupby(posts, key=lambda post: post[0].year):
+                links = "\n".join(
+                    f'<li><time datetime="{published.isoformat()}">{published.isoformat()}</time> '
+                    f'<a href="{versioned_url(output, Path("blog.html"), version)}">{escape(title)}</a></li>'
+                    for published, title, output in year_posts
+                )
+                year_sections.append(f"<h2>{year}</h2><ul>{links}</ul>")
+            body += f'\n<section class="post-list">{"".join(year_sections)}</section>'
         title = document_title(metadata, markdown, slug)
         render_page(output, title, slug, body, metadata, version)
     (ROOT / "about.html").unlink(missing_ok=True)
