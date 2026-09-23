@@ -19,6 +19,45 @@ themeButtons.forEach((button) => {
 });
 setTheme(document.documentElement.dataset.theme || "dark");
 
+const musicPage = document.querySelector(".music-page");
+if (musicPage) {
+  const albumList = musicPage.querySelector("#album-reviews + ul");
+  if (albumList) {
+    const records = Array.from(albumList.children);
+    for (let index = records.length - 1; index > 0; index--) {
+      const otherIndex = Math.floor(Math.random() * (index + 1));
+      [records[index], records[otherIndex]] = [records[otherIndex], records[index]];
+    }
+    records.forEach((record) => albumList.append(record));
+  }
+
+  const lightbox = document.createElement("dialog");
+  lightbox.className = "cover-lightbox";
+  const closeButton = document.createElement("button");
+  closeButton.type = "button";
+  closeButton.setAttribute("aria-label", "Close enlarged album cover");
+  closeButton.textContent = "×";
+  const enlargedCover = document.createElement("img");
+  lightbox.append(closeButton, enlargedCover);
+  document.body.append(lightbox);
+
+  musicPage.addEventListener("click", (event) => {
+    const link = event.target.closest("a");
+    const cover = link?.querySelector("img");
+    if (!cover || link.closest("figure") || !link.closest("ul")) return;
+    event.preventDefault();
+    enlargedCover.src = link.href;
+    enlargedCover.alt = cover.alt;
+    lightbox.showModal();
+  });
+  closeButton.addEventListener("click", () => lightbox.close());
+  lightbox.addEventListener("click", (event) => {
+    if (event.target === lightbox) lightbox.close();
+  });
+  lightbox.addEventListener("close", () => enlargedCover.removeAttribute("src"));
+  musicPage.querySelectorAll("ul img").forEach((image) => { image.loading = "lazy"; });
+}
+
 document.querySelectorAll(".markdown-content h2, .markdown-content h3, .markdown-content h4, .markdown-content h5, .markdown-content h6").forEach((heading, index) => {
   const level = Number(heading.tagName.slice(1));
   const title = heading.textContent.trim();

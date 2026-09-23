@@ -16,6 +16,6 @@ title: Post title
 
 The date in the filename controls the post date and ordering; an optional `date: YYYY-MM-DD` frontmatter value must be a real ISO date, not the placeholder. Posts are listed automatically on the Blog page and each gets its own HTML page. Put figures in `media/` and use `![caption](media/file.png)` or `![[file.png]]`; raw HTML figures in posts use paths like `../media/file.png`. Cross-link site pages with `[[Music]]`, `[[Projects|my projects]]`, or `[[music.md]]`; page names are case-insensitive and become ordinary static links. Build from the repository root with `python3 build.py`.
 
-For Music, add one list item per album: `- ![[cover.jpg|Album cover]] **Artist — Album.** One-sentence review.` Keep the image and text in the same item so the cover floats beside its review. Cover art links to its Wikipedia album page.
+For Music, add one list item per album: `- ![[cover.jpg|Cover of album]] **Artist — [Album](URL).** One-sentence review.` Keep the image and text in the same item so the cover floats beside its review. Click a cover to enlarge it; album reviews shuffle each time the page loads.
 
 Use `$...$` for inline math and `$$...$$` for display math; MathJax typesets both in New Computer Modern.

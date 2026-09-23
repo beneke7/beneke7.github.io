@@ -19,6 +19,7 @@ a:hover { color: #c9c9c9; }
 h1, h2 { font-family: Georgia, "Times New Roman", serif; }
 h1 { margin: .1rem 0 1.2rem; font-size: 1.9rem; }
 html[data-theme="light"] { filter: invert(1) hue-rotate(180deg); }
+html[data-theme="light"] .music-page img { filter: invert(1) hue-rotate(180deg); }
 .markdown-content { text-align: justify; hyphens: auto; line-height: 1.6; }
 .markdown-content > :first-child { margin-block-start: 0; }
 .markdown-content h1, .markdown-content h2, .markdown-content h3,
@@ -113,13 +114,45 @@ html[data-theme="light"] { filter: invert(1) hue-rotate(180deg); }
   margin-block: 1.5rem;
 }
 .music-page ul > li::before { display: none; }
-.music-page ul img {
+.music-page ul a:has(> img) {
   float: left;
   width: clamp(7rem, 17vw, 10rem);
-  height: auto;
   margin: .2rem 1.2rem .75rem 0;
+  line-height: 0;
+}
+.music-page ul img {
+  display: block;
+  width: 100%;
+  height: auto;
   border: 1px solid rgb(255 255 255 / 30%);
   image-rendering: auto;
+  cursor: zoom-in;
+}
+.cover-lightbox {
+  max-width: calc(100vw - 2rem);
+  max-height: calc(100svh - 2rem);
+  padding: .75rem;
+  border: 2px dashed currentColor;
+  background: #050609;
+  color: #f1f1f1;
+}
+.cover-lightbox::backdrop { background: rgb(0 0 0 / 88%); }
+.cover-lightbox img {
+  display: block;
+  max-width: min(82vw, 64rem);
+  max-height: 82svh;
+  object-fit: contain;
+}
+.cover-lightbox button {
+  position: absolute;
+  top: .25rem;
+  right: .25rem;
+  border: 1px dashed currentColor;
+  background: #050609;
+  color: inherit;
+  font: inherit;
+  line-height: 1;
+  cursor: pointer;
 }
 .heading-toggle {
   margin-right: .45em;

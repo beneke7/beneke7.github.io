@@ -66,7 +66,8 @@ def convert_obsidian_syntax(text, output):
         target = target.strip()
         label = label.strip() if separator else Path(target).stem
         url = target if target.startswith(("http://", "https://")) else media_url(target, output)
-        return f"![{label}]({url})"
+        image = f"![{label}]({url})"
+        return f"[{image}]({url})" if output == Path("music.html") and label.casefold().startswith("cover of ") else image
 
     text = re.sub(r"!\[\[([^\]]+)\]\]", embed, text)
 

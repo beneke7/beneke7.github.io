@@ -18,6 +18,7 @@ The very short list will be soon expanded. I'll also add little excerpts so that
 ## Youtube channels
 
 - [DGy (HU)](https://www.youtube.com/@dgyegyetemieloadasai7124)
+
 ## Other
 
 - [Zombo](https://zombo.com/)
