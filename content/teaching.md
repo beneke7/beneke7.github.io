@@ -25,3 +25,7 @@ Contact me for further advice and material!
 The method of moving point is a algebraic-geometry based method for solving most of olympiad math problems in a systematic way. I helped him develop some study materials for it, here you can find those:
 
 [youtube video](https://youtu.be/nJne30M9ijo?si=LibgXbwsRHqs41HB)
+
+[website](https://beneke7.github.io/mmp-site-clean/contestants/introduction/)
+
+Contact him: vilmosmolnarszabo at gmail

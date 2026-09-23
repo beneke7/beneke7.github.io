@@ -17,7 +17,7 @@ body {
 a, a:visited { color: #f1f1f1; }
 a:hover { color: #c9c9c9; }
 h1, h2 { font-family: Georgia, "Times New Roman", serif; }
-h1 { margin: .1rem 0 1.2rem; font-size: 2.25rem; }
+h1 { margin: .1rem 0 1.2rem; font-size: 2rem; }
 html[data-theme="light"] { filter: invert(1) hue-rotate(180deg); }
 .markdown-content { text-align: justify; hyphens: auto; line-height: 1.6; }
 .markdown-content > :first-child { margin-block-start: 0; }
@@ -232,6 +232,6 @@ main, header, footer { text-shadow: 0 1px 4px #000; }
 @media (max-width: 600px) {
   body { padding: 1rem 1rem 2rem; }
   .top-nav { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  h1 { font-size: 1.9rem; }
+  h1 { font-size: 1.75rem; }
   .space picture, .space .planet-gif { left: -42vw; bottom: -25vh; width: 95vw; }
 }
