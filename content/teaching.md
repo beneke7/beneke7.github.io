@@ -12,5 +12,7 @@ Hungarian formula collection (official for the pre-competition first round):
 
 [An extensive list of physics problems with categorisation and sources](https://beneke7.github.io/physics-problems-corpus/)
 
-[Jaan Kalda's stuff](https://www.ioc.ee/~kalda/ipho/)
+[Jaan Kalda study guides](https://www.ioc.ee/~kalda/ipho/) , [Jaan Kalda solutions](https://physoly.tech/kalda/)
+
+[Kevin Zhou study guides](https://knzhou.github.io/)
 
