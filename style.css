@@ -43,6 +43,23 @@ html[data-theme="light"] .music-page img { filter: invert(1) hue-rotate(180deg);
 .markdown-content h4 { font-size: 1.15em; }
 .markdown-content h5 { font-size: 1.07em; }
 .markdown-content h6 { font-size: 1em; }
+.markdown-content blockquote {
+  margin: 1.2em 0;
+  padding: .7em 1em;
+  border-inline-start: 4px solid var(--nav-current);
+  background: rgb(255 255 255 / 7%);
+  text-align: left;
+}
+.markdown-content blockquote p { margin: .2em 0; }
+.markdown-content blockquote cite {
+  display: block;
+  margin-top: .55em;
+  font-size: .78em;
+  font-style: normal;
+  opacity: .75;
+  text-align: right;
+}
+html[data-theme="light"] .markdown-content blockquote { border-inline-start-color: #cf8390; }
 .page-content h1 { font-size: 1.5em; }
 .page-content h2 { font-size: 1.3em; }
 .page-content h3 { font-size: 1.15em; }
@@ -359,7 +376,7 @@ main, header, footer { text-shadow: 0 1px 4px #000; }
   .markdown-content img { max-width: 100%; height: auto; }
   .markdown-content table { margin-inline: 0; }
   .markdown-content pre { max-width: 100%; overflow-x: auto; }
-  .markdown-content blockquote { margin-inline: 0; padding-inline-start: .9em; border-inline-start: 3px dashed #888; }
+  .markdown-content blockquote { margin-inline: 0; padding-inline-start: .9em; }
   .top-nav { font-size: 1.15rem; letter-spacing: .06em; gap: .25rem; }
   .top-nav a { min-height: 2.75rem; }
   .theme-switch { position: static; margin-top: .45rem; }
