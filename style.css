@@ -99,7 +99,6 @@ html[data-theme="light"] .music-page img { filter: invert(1) hue-rotate(180deg);
   text-align: left;
 }
 .markdown-content tbody tr:last-child td { border-bottom: 2px solid #fff; }
-.music-page { text-align: left; }
 .music-page > figure { margin: 1rem 0 2rem; }
 .music-page > figure img {
   width: 100%;
@@ -261,9 +260,9 @@ footer { margin-top: 3rem; padding: 1rem 0 0; border-top: 3px solid #fff; }
   height: 3px;
   transition: opacity 100ms steps(2, end);
 }
-.star-k { top: 19%; left: .8rem; }
-.star-l { top: 52%; right: .8rem; }
-.star-m { bottom: 16%; left: .8rem; }
+.star-k { top: 19%; left: 4rem; }
+.star-l { top: 52%; right: 4rem; }
+.star-m { bottom: 16%; left: 4rem; }
 html[data-theme="light"] .space .star-k,
 html[data-theme="light"] .space .star-l,
 html[data-theme="light"] .space .star-m { display: block; }
