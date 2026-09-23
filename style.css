@@ -1,29 +1,6 @@
 @font-face {
-  font-family: "Latin Modern Roman";
-  src: url("assets/fonts/latin-modern-roman-regular.otf") format("opentype");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Latin Modern Roman";
-  src: url("assets/fonts/latin-modern-roman-bold.otf") format("opentype");
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Latin Modern Roman";
-  src: url("assets/fonts/latin-modern-roman-italic.otf") format("opentype");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Latin Modern Roman";
-  src: url("assets/fonts/latin-modern-roman-bolditalic.otf") format("opentype");
-  font-weight: 700;
-  font-style: italic;
+  font-family: Silkscreen;
+  src: url("assets/fonts/silkscreen-regular.ttf") format("truetype");
   font-display: swap;
 }
 * { box-sizing: border-box; }
@@ -39,16 +16,17 @@ body {
   padding: 1.25rem 1.5rem 3rem;
   background: transparent;
   color: #f1f1f1;
-  font: 120%/1.55 "Latin Modern Roman", "Computer Modern", Georgia, serif;
+  font: 120%/1.55 Georgia, "Times New Roman", serif;
   text-align: center;
 }
 a, a:visited { color: #f1f1f1; }
 a:hover { color: #c9c9c9; }
-h1, h2 { font-family: "Latin Modern Roman", "Computer Modern", Georgia, serif; }
+h1, h2 { font-family: Georgia, "Times New Roman", serif; }
 h1 { margin: .25rem 0 1rem; font-size: 2.25rem; }
 h2 { font-size: 1.35rem; }
-.markdown-content { text-align: justify; }
+.markdown-content { text-align: justify; hyphens: auto; }
 .markdown-content h1, .markdown-content h2, .markdown-content h3 { text-align: left; }
+.markdown-content h3 { font-size: 1.1rem; }
 .markdown-content li { text-align: left; }
 .heading-toggle {
   margin-right: .45em;
@@ -66,9 +44,10 @@ h2 { font-size: 1.35rem; }
   grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 3px;
   padding: 0 0 1.5rem;
-  font: bold .95rem/1.2 "Latin Modern Roman", "Computer Modern", Georgia, serif;
+  font: 400 1rem/1.2 Silkscreen, monospace;
 }
 .top-nav a {
+  position: relative;
   display: grid;
   min-height: 3rem;
   place-items: center;
@@ -78,8 +57,19 @@ h2 { font-size: 1.35rem; }
   letter-spacing: .04em;
 }
 .top-nav a:hover, .top-nav a[aria-current="page"] { background: rgb(255 255 255 / 9%); }
+.top-nav a[aria-current="page"] { color: #a8d66d; }
+.top-nav a[aria-current="page"]::before {
+  position: absolute;
+  top: calc(50% - 3px);
+  left: 8px;
+  width: 6px;
+  height: 6px;
+  background: currentColor;
+  content: "";
+}
+.top-nav a:focus-visible { outline: 2px solid #a8d66d; outline-offset: 2px; }
 header { padding: .5rem 0 1rem; }
-footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #59606b; }
+footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #383b44; }
 .space {
   position: fixed;
   z-index: -1;
@@ -146,7 +136,7 @@ footer { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid #59606b; }
   opacity: 0;
   image-rendering: pixelated;
   transition: opacity .15s linear;
-  animation: planet-spin 300s linear infinite;
+  animation: planet-spin 900s linear infinite;
   will-change: transform;
 }
 .space .planet-video.is-ready { opacity: 1; }

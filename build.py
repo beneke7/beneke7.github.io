@@ -24,7 +24,7 @@ def cache_version():
     media_files = media.rglob("*") if media.is_dir() else ()
     files = [ROOT / "style.css", ROOT / "site.js", *CONTENT.rglob("*.md"),
              *(path for path in media_files if path.is_file()),
-             *(path for path in (ROOT / "assets").iterdir() if path.is_file())]
+             *(path for path in (ROOT / "assets").rglob("*") if path.is_file())]
     digest = hashlib.sha256()
     for path in sorted(files):
         digest.update(path.relative_to(ROOT).as_posix().encode())
