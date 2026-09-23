@@ -2,6 +2,9 @@
 title: About
 planet: original
 ---
-# About
+I am Benedek. I like:
+- sex
+- physics
+- tube amps
 
-A small personal site on the old-fashioned web.
+
