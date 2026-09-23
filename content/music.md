@@ -5,7 +5,7 @@ title: Music
 
 ![[trumpet.jpg]]
 
-## My record
+## My music
 
 - ![[blueprints-of-happiness.jpg|Cover of Blueprints of Happiness]] **[Blueprints of Happiness](https://www.youtube.com/watch?v=Vd22QjZAygc&t=120s).** *A solo acoustic guitar record played, recorded, and mixed by me.*
 
@@ -53,6 +53,8 @@ He waved goodbye from his airship to the Monk. He was gifted a crate of whiskey 
 
 He woke up to loud drums, horns and beaming spotlights—a fair was ahead. He landed the ship on a meadow and headed towards the huge tents. A glowing sign greeted him with hefty capital letters: “WORLD’S FAIR”. As he strolled inside he saw long-lost magic along with compact and slender devices with a metallic shine. Every nation was building towards something greater, sometimes off by a notch, sometimes by a mile. He continued as a nickel samovar whistled through the air above his head.
 
+
+[**Mercy Deluxe session**] coming soon ...
 ## Album reviews
 
 - ![[mercy-mercy-mercy.jpg|Cover of Mercy, Mercy, Mercy! Live at “The Club”]] **Cannonball Adderley Quintet — [Mercy, Mercy, Mercy! Live at “The Club”](https://en.wikipedia.org/wiki/Mercy%2C_Mercy%2C_Mercy%21_Live_at_%22The_Club%22).** *Coming soon…*
