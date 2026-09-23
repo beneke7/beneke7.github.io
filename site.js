@@ -5,6 +5,10 @@ const setTheme = (theme) => {
   themeButtons.forEach((button) => {
     button.setAttribute("aria-pressed", String(button.dataset.themeChoice === theme));
   });
+  document.querySelectorAll("[data-dark-src]").forEach((image) => {
+    const source = image.dataset[theme === "light" ? "lightSrc" : "darkSrc"];
+    if (source && image.getAttribute("src") !== source) image.src = source;
+  });
   try {
     localStorage.setItem("site-theme", theme);
   } catch {}
@@ -30,8 +34,6 @@ document.querySelectorAll(".markdown-content h2, .markdown-content h3, .markdown
     sibling = nextSibling;
   }
 
-  if (!content.children.length) return;
-
   const toggle = document.createElement("button");
   toggle.className = "heading-toggle";
   toggle.type = "button";
@@ -39,7 +41,10 @@ document.querySelectorAll(".markdown-content h2, .markdown-content h3, .markdown
   toggle.setAttribute("aria-expanded", "true");
   toggle.setAttribute("aria-controls", content.id);
   toggle.setAttribute("aria-label", `Collapse ${title}`);
-  heading.prepend(toggle);
+  const label = document.createElement("span");
+  label.className = "heading-text";
+  while (heading.firstChild) label.append(heading.firstChild);
+  heading.append(toggle, label);
   heading.after(content);
 
   toggle.addEventListener("click", () => {

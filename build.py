@@ -98,7 +98,7 @@ def convert_obsidian_syntax(text, output):
 def convert_markdown(text, output):
     text = convert_obsidian_syntax(text, output)
     return subprocess.run(
-        ["pandoc", "--from=markdown-blank_before_header", "--to=html5", "--mathjax", "--wrap=none"],
+        ["pandoc", "--from=markdown-blank_before_header+lists_without_preceding_blankline", "--to=html5", "--mathjax", "--wrap=none"],
         input=text, text=True, capture_output=True, check=True,
     ).stdout
 
@@ -144,9 +144,23 @@ def render_page(output, title, active, body, metadata, version):
     planet_markup = ""
     if planet in PLANETS:
         asset = PLANETS[planet]
+        gif = Path("assets") / f"{asset}.gif"
         poster = Path("assets") / f"{asset}.png"
-        planet_markup = f'''<img class="planet-gif" src="{versioned_url(Path('assets') / f'{asset}.gif', output, version)}" alt="">
-    <picture><img src="{versioned_url(poster, output, version)}" alt=""></picture>'''
+        light_sources = ""
+        poster_light_sources = ""
+        if planet == "original":
+            light_gif = Path("assets/light-wet-planet.gif")
+            light_poster = Path("assets/light-wet-planet.png")
+            light_sources = (
+                f' data-dark-src="{versioned_url(gif, output, version)}"'
+                f' data-light-src="{versioned_url(light_gif, output, version)}"'
+            )
+            poster_light_sources = (
+                f' data-dark-src="{versioned_url(poster, output, version)}"'
+                f' data-light-src="{versioned_url(light_poster, output, version)}"'
+            )
+        planet_markup = f'''<img class="planet-gif" src="{versioned_url(gif, output, version)}"{light_sources} alt="">
+    <picture><img src="{versioned_url(poster, output, version)}"{poster_light_sources} alt=""></picture>'''
     html_title = title if active == "about" else f"{title} — Beneke’s corner of the web"
     mathjax = '<script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>' if 'class="math ' in body else ""
     theme_script = '''<script>try { const theme = localStorage.getItem("site-theme"); if (theme === "light" || theme === "dark") document.documentElement.dataset.theme = theme; } catch {}</script>'''
