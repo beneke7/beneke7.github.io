@@ -43,6 +43,31 @@ html[data-theme="light"] { filter: invert(1) hue-rotate(180deg); }
 .markdown-content .heading-text::first-letter { font-size: 1.15em; }
 .markdown-content h1::first-letter { font-size: 1.25em; }
 .markdown-content hr { border: 0; border-top: 3px solid #fff; }
+.markdown-content .download-button {
+  display: inline-block;
+  padding: .45em .85em;
+  border: 2px solid currentColor;
+  font-weight: 700;
+  text-decoration: none;
+}
+.markdown-content p:has(+ ul) { margin-bottom: .2em; }
+.markdown-content ul {
+  margin-block: .2em 1em;
+  padding-inline-start: 1.3em;
+  list-style: none;
+}
+.markdown-content ul li { position: relative; margin-block: .2em; }
+.markdown-content ul li::before {
+  position: absolute;
+  top: .72em;
+  left: -1.05em;
+  width: 2px;
+  height: 2px;
+  background: currentColor;
+  box-shadow: 0 -8px currentColor, 0 -4px currentColor, 0 4px currentColor, 0 8px currentColor,
+    -8px 0 currentColor, -4px 0 currentColor, 4px 0 currentColor, 8px 0 currentColor;
+  content: "";
+}
 .markdown-content table {
   display: block;
   width: fit-content;
