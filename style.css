@@ -47,7 +47,7 @@ html[data-theme="light"] .music-page img { filter: invert(1) hue-rotate(180deg);
   margin: 1.2em 0;
   padding: .7em 1em;
   border-inline-start: 4px solid var(--nav-current);
-  background: rgb(255 255 255 / 7%);
+  background: rgb(182 74 93 / 12%);
   text-align: left;
 }
 .markdown-content blockquote p { margin: .2em 0; }
