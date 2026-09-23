@@ -13,9 +13,9 @@ NAV = (("About", "about"), ("Projects", "projects"), ("Blog", "blog"),
        ("Teaching", "teaching"), ("Music", "music"), ("Links", "links"))
 PAGES = ("index", "about", "blog", "projects", "teaching", "music", "links")
 PLANETS = {
-    "original": ("pixel-planet", 1 / 240),
-    "gas-giant": ("gas-giant", 1 / 240),
-    "ice-world": ("ice-world", 1 / 240),
+    "original": ("pixel-planet", 1 / 16),
+    "gas-giant": ("gas-giant", 1 / 16),
+    "ice-world": ("ice-world", 1 / 16),
 }
 
 

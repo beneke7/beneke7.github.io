@@ -18,6 +18,12 @@ if (planetSpace && !reducedMotion) {
     };
 
     planetVideo.addEventListener("loadedmetadata", () => {
+      try {
+        planetVideo.playbackRate = rotationSpeed;
+      } catch {
+        planetVideo.classList.add("is-error");
+        return;
+      }
       if (Number.isFinite(planetVideo.duration) && planetVideo.duration > 0) {
         const resumeAt = elapsed % planetVideo.duration;
         if (resumeAt > 0.05) {
@@ -30,7 +36,6 @@ if (planetSpace && !reducedMotion) {
     }, { once: true });
 
     planetVideo.addEventListener("error", () => planetVideo.classList.add("is-error"), { once: true });
-    planetVideo.playbackRate = rotationSpeed;
     planetVideo.src = planetVideo.dataset.src;
 
     document.addEventListener("visibilitychange", () => {
