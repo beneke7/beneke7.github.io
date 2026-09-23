@@ -9,4 +9,4 @@ I am Benedek. I like:
 
 --- 
 
-check out the latest blog (piano modelling)[[2026-09-25-slug]]
+check out the latest blog [[2026-09-25-slug]]

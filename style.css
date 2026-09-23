@@ -41,8 +41,15 @@ html[data-theme="light"] { filter: invert(1) hue-rotate(180deg); }
 .markdown-content h4 { font-size: 1.15em; }
 .markdown-content h5 { font-size: 1.07em; }
 .markdown-content h6 { font-size: 1em; }
+.page-content h1 { font-size: 1.5em; }
+.page-content h2 { font-size: 1.3em; }
+.page-content h3 { font-size: 1.15em; }
+.page-content h4 { font-size: 1.07em; }
+.page-content h5 { font-size: 1em; }
+.page-content h6 { font-size: .9em; }
 .markdown-content .heading-text::first-letter { font-size: 1.15em; }
 .markdown-content h1::first-letter { font-size: 1.25em; }
+.page-content h1::first-letter { font-size: 1.15em; }
 .markdown-content hr { border: 0; border-top: 3px solid #fff; }
 .markdown-content .download-button {
   display: inline-block;

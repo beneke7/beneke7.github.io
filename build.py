@@ -128,6 +128,7 @@ def versioned_url(target, output, version):
 def render_page(output, title, active, body, metadata, version):
     prefix = os.path.relpath(ROOT, ROOT / output.parent).replace(os.sep, "/")
     prefix = "" if prefix == "." else f"{prefix}/"
+    content_class = "" if active == "blog" else " page-content"
     nav_items = []
     for label, slug in NAV:
         current = ' aria-current="page"' if active == slug else ""
@@ -192,7 +193,7 @@ def render_page(output, title, active, body, metadata, version):
       <button type="button" data-theme-choice="light" aria-label="Light mode" aria-pressed="false">☼</button>
     </div>
   </header>
-  <main class="markdown-content">
+  <main class="markdown-content{content_class}">
     {body}
   </main>
   <footer><small>vive la guerre éternelle — planets by <a href="https://github.com/Deep-Fold/PixelPlanets">PixelPlanets</a>.</small></footer>
