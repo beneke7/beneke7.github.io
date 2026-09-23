@@ -9,9 +9,6 @@ if (planetSpace && !reducedMotion) {
     startedAt = Date.now();
     sessionStorage.setItem(clockKey, String(startedAt));
   }
-  const phase = (Date.now() - startedAt) % 900000;
-  (planetVideo || planetSpace.querySelector("picture")).style.animationDelay = `${-phase / 1000}s`;
-
   if (planetVideo) {
     const rotationSpeed = Number(planetVideo.dataset.speed) || 1;
     const elapsed = (Date.now() - startedAt) / 1000 * rotationSpeed;
