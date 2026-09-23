@@ -12,7 +12,9 @@ fi
 
 /opt/homebrew/bin/python3 build.py
 git add -- content assets style.css site.js build.py .gitignore scripts com.beneke.site-morning.plist
+git reset -- content/.obsidian
 find . -maxdepth 1 -name '*.html' -print0 | xargs -0 git add --
+git add -u -- '*.html'
 [[ -d blog ]] && git add -- blog
 [[ -d media ]] && git add -- media
 

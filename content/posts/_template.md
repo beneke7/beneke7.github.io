@@ -1,6 +1,5 @@
 ---
 title: Post title
-date: YYYY-MM-DD
 ---
 # Post title
 

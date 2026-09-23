@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#000000">
+  <title>CP-80 — Beneke’s corner of the web</title>
+  <script>try { const theme = localStorage.getItem("site-theme"); if (theme === "light" || theme === "dark") document.documentElement.dataset.theme = theme; } catch {}</script>
+  <link rel="stylesheet" href="../style.css?v=87cf452d17e6">
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>
+  <script src="../site.js?v=87cf452d17e6" defer></script>
+</head>
+<body>
+  <div class="space dim-stars" aria-hidden="true">
+    <span class="pixel-star star-a"></span>
+<span class="pixel-star star-b"></span>
+<span class="pixel-star star-c"></span>
+<span class="pixel-star star-d"></span>
+<span class="pixel-star star-e"></span>
+<span class="pixel-star star-f"></span>
+<span class="pixel-star star-g"></span>
+
+  </div>
+  <header>
+    <div class="theme-switch" role="group" aria-label="Color theme">
+      <button type="button" data-theme-choice="dark" aria-label="Dark mode" aria-pressed="true">☾</button>
+      <button type="button" data-theme-choice="light" aria-label="Light mode" aria-pressed="false">☼</button>
+    </div>
+    <nav class="top-nav" aria-label="Main navigation">
+      <a href="../index.html?v=87cf452d17e6">About</a>
+<a href="../blog.html?v=87cf452d17e6" aria-current="page">Blog</a>
+<a href="../projects.html?v=87cf452d17e6">Projects</a>
+<a href="../teaching.html?v=87cf452d17e6">Teaching</a>
+<a href="../music.html?v=87cf452d17e6">Music</a>
+<a href="../links.html?v=87cf452d17e6">Links</a>
+    </nav>
+  </header>
+  <main class="markdown-content">
+    <h1 id="modelling-an-electric-grand-piano">Modelling an electric grand piano</h1>
+<p>This article discusses physically modelling and simulating a Yamaha CP-80 electric grand piano. I discuss how I got from inspiration to plugin in about 3 days with agentic coding and some physics knowledge. This includes turning qualitative assumptions into important constraints, and navigating an optimisation landscape without truly absolute metrics.</p>
+<h2 id="introduction">1 Introduction</h2>
+<h3 id="personal-motivation">1.1 Personal motivation</h3>
+<p>I was watching a <a href="https://www.youtube.com/watch?v=rv4wf7bzfFE&amp;t=1858s">live show</a> of my favourite funk band when i noticed a weird keyboard on stage. It looked like a small grand piano shaped suitcase with the keys attached, and sounded more piano-like than your usual e-pianos.</p>
+<p>Due to my severe <a href="https://en.wikipedia.org/wiki/Shopping_addiction#Gear_Acquisition_Syndrome_(G.A.S.)">G.A.S.</a> my second thought was to get one for myself. The cheapest listing in Europe was €5k. I figured the physics shouldn’t be that hard and code is cheap as ever, so why not just build one for myself digitally. This article documents the process from a qualitative model all the way to a working, relatively accurate and physically meaningful implementation.</p>
+<h3 id="a-short-history-of-the-electric-grand">1.2 A short history of the electric grand</h3>
+<p>Experimentation to amplify stringed instruments began in the early 20th century with the rise of the big band era. Guitars acoustically just weren’t loud enough. And by the 1940s electric guitars conquered popular music.</p>
+<figure>
+<img src="../media/neo-b.jpg" width="600" alt="Neo-Bechstein">
+<figcaption>
+Figure 1: A woman playing a Neo-Bechstein, captured on camera.
+</figcaption>
+</figure>
+<p>In the 1930s a German physical chemist Walther Nernst already built working grand pianos that projected sound using a loudspeaker instead of vibrating wood inside the instrument itself. (Note that he also won the Nobel Prize in Chemistry for developing the third law of thermodynamics.) Curiously his instruments, the Neo-Bechstein were very similar to the subject of this article: the Yamaha CP-80 which only emerged in the 70s.</p>
+<p>In the decades between the two instruments the commercially released electric pianos weren’t stringed instruments, rather the hammers struck metal tuning forks or reeds. These gave a similar touch sensitivity to the piano, but produced a very different sound.</p>
+<figure>
+<img src="../media/cp80.png" width="600" alt="CP-80">
+<figcaption>
+Figure 2: A cutout from a Yamaha sales brochure.
+</figcaption>
+</figure>
+<p>Yamaha designed the CP-80/70 as a replacement of a grand piano for the touring rock musician. The premise was an instrument with the same feel as a top of the line Yamaha piano, superior transportability (you can split it into 2 suitcases), easy amplification on big and loud stages because of its piezo pickups and a relatively close sound to a proper piano. And because of its electric nature it also carried a lot of the funky and glassy sounds characteristic to 70s funk and 80s disco.</p>
+<p>It became really popular at its time, and was used by Paul McCartney, John Lennon, Billy Joel, Pink Floyd and countless others, but mostly on tour or at certain concerts. By todays standards its a very inconvenient instrument, and a MIDI keyboard with a proper sample pack gets you much closer to a real concert piano with superb sound quality. Nevertheless electric grands are important pieces of keyboard history with unique tones that still prevail today.</p>
+<h3 id="physics-of-an-electric-grand-qualitatively">1.3 Physics of an electric grand (qualitatively)</h3>
+<p>To understand the electric grand piano we have to start with the regular one, and luckily most of our job is omission.</p>
+<h4 id="case-and-frame">1.3.1 Case and frame</h4>
+<p>Every part of a grand piano sits in a wooden case on legs. It has two jobs. The curved inner rim is what the soundboard (I will explain later what it is in detail) is glued to, so it sets the boundary for how that panel is allowed to vibrate. The outer case and lid form an enclosure that filters* the sound emitted by the soundboard. A concrete example for filtering behaviour is that a closed lid piano will sound muffled, compared to one with the lid opened. The case itself radiates almost nothing, measurements put it about 20 dB below the soundboard of upright pianos.</p>
+<p>Inside the case there is a cast iron frame on which the strings are suspended. It’s what carries the ~20 tonnes of tension exerted by the strings. This has no acoustic purpose, and only should serve as a boundary condition for the strings. The main difference between the electric and acoustic versions here is that in an acoustic pianos, there are 1, 2 or 3 strings per note, while in the CP-80 1 or 2. Also the CP-80’s bass strings are 67.9 cm against roughly 213 cm on a grand. A significant reduction in length.</p>
+<p>*Here, “filter” is used in the signal-processing sense: the case changes the frequency response without creating new frequencies.</p>
+<h4 id="the-strings">1.3.2 The strings</h4>
+<p>The simplest string model assumes a perfectly flexible string with hinged ends. Its wave speed is independent of frequency, so its standing-wave frequencies are exact integer multiples of the fundamental.</p>
+<p>On the contrary one of the most important tonal characteristic of a grand is its <em>inharmonicity</em> meaning a nonlinear dispersion relation. (This means that the velocity of the waves is frequency dependent.) This causes the upper harmonics to shift away slightly. For example if you hit a middle C and a C an octave above it, the upper harmonic of the middle C will be a little off from the other ones base frequency creating a natural richness. This effect can be introduced to the model by adding a term to the differential equation that accounts for stiffness - the resistance of the string against bending.</p>
+<p>Interestingly because of the much shorter scale length of the CP-80, the inharmonicity has to compensated by tuning the instrument specially.</p>
+<p>With this we get to the last flaw with the textbook string model. The waves on such never decay, which is very obviously non physical. It is easily solved by introducing a velocity dependent dissipative force. Besides this we also use a frequency dependent damping term, which will be discussed later in more detail.</p>
+<h4 id="the-hammer-action">1.3.3 The hammer action</h4>
+<p>The innovation of the piano was that by pressing keys the string wasn’t plucked by a plectrum (harpsichord) but rather the there is a relatively complex mechanical action that launches a hammer to strike the string. This gives superior dynamics control and an improved return mechanism for repeated notes. It is also responsible for the very character and feel of a piano. The CP-80 essentially has the action of a standard Yamaha grand, so the mechanism is pretty much the same.</p>
+<p>The string-hammer interaction is the most critical part of our model, since this is the only nonlinear mechanism in play, and it determines the initial harmonic content, so the character of every note. Tuning its parameters right is crucial for both the sound and feel.</p>
+<p>It is characterised by the hammers material (felt in case of acoustic pianos, urethane and artificial leather in the CP-80-s case), their weight and attack force. It is best imagined as a weird string-like foam falling onto the string making contact with it for a couple of milliseconds, then getting propelled back.</p>
+<p>*Note that a digital model can not reproduce the physical feel of a hammer action. Thus this digital emulation is best used with a MIDI capable digital piano with a hammer action weighed keys.</p>
+<h4 id="what-actually-radiates-sound">1.3.4 What actually radiates sound?</h4>
+<p>In the case of the acoustic grand piano the strings sit on a bridge, a wooden block connected to the soundboard: a large thin wooden sheet that can freely resonate. Think of it as the top of an acoustic guitar or a drum skin. This is the part responsible for radiating sound outwards.</p>
+<p>The CP-80 has no soundboard, so its strings produce very little acoustic sound. The sound is amplified electrically and pushed through a loudspeaker. The conversion happens using something called a piezoelectric pickup. Piezoelectric materials have a special property that the polarisation induced in them is coupled to their strain (basically deformation defined in a certain physically meaningful way). This way a piezoelectric pickup sitting under or alongside the strings termination point turns the force exerted on it by the strings vibration to a changing electric field inside it, and so a clear voltage readout.</p>
+<p>The lack of a shared soundboard also lets us omit sympathetic resonance between different notes. The exception is a note with two strings: those strings are close enough in pitch and position to interact.</p>
+<p>The piezo pickups readout then goes through a filtering circuit (see also 1.3.1) consisting of a bandwidth filter and a three parameter equalizer (using this you can boost or diminish high, low and medium frequencies separately). There is also a tremolo unit, but not the conventional mono tremolo, where the whole signal gets louder and quieter together. Rather the sound moves rhythmically between the stereo channels while the modulation cancels in the centre.</p>
+<h2 id="physical-models">2 Physical models</h2>
+<h3 id="modelling-a-string">2.1 Modelling a string</h3>
+<h4 id="the-differential-equation">2.1.1 The differential equation</h4>
+<p>Let <span class="math inline">\(y(x,t)\)</span> be the transverse displacement of a string of length <span class="math inline">\(L\)</span>. Assuming small slopes, <span class="math inline">\(\partial_x y\ll1\)</span>, the transverse force balance gives:</p>
+<p><span class="math display">\[\mu \,\partial_t^2y=
+\underbrace{T\,\partial_x^2y}_{\text{tension}}
+-\underbrace{2\mu b_1\,\partial_t y}_{\text{flat loss}}
++\underbrace{\eta T\,\partial_x^2\partial_t y}_{\text{internal friction}}
+-\underbrace{EI\,\partial_x^4y}_{\text{stiffness}}
++f(x,t).
+\]</span></p>
+<p>Here <span class="math inline">\(\mu\)</span> is the linear density, <span class="math inline">\(T\)</span> the string tension, <span class="math inline">\(E\)</span> Young’s modulus, and <span class="math inline">\(I=\pi d^4/64\)</span> the second moment of area of a wire with diameter <span class="math inline">\(d\)</span>. The term <span class="math inline">\(f(x,t)\)</span> is the external force per unit length supplied by the hammer.</p>
+<p>Rather than modelling the losses at the terminations and in the air separately, I represent their approximately frequency-independent part with the term <span class="math inline">\(-2\mu b_1\,\partial_t y\)</span>. After projection onto the string’s modes, it gives every partial of a given string the same decay rate. The parameter <span class="math inline">\(b_1\)</span> is fitted independently for each string.</p>
+<p>The term <span class="math inline">\(\eta T,\partial_x^2\partial_t y\)</span> gives stronger damping to modes with larger wavenumber. It is similar to Kelvin–Voigt damping, where elastic and viscous stresses are added</p>
+<p><span class="math display">\[
+\sigma(t)=E\,\epsilon(t)+\eta\,\frac{d\epsilon(t)}{dt}.
+\]</span></p>
+<h4 id="boundary-conditions">2.1.2 Boundary conditions</h4>
+<p>We need four boundary conditions for the fourth order equation in <span class="math inline">\(x\)</span>. Two are given by the string not being able to move at its terminations: <span class="math inline">\(y(0,t) = y(L,t)=0\)</span>. The other two comes from our assumption that the string is hinged rather then clamped. This means that in our model the support at the terminations is point like, this means it can not exert any torque giving <span class="math inline">\(\partial_x^2 y(0,t)=\partial_x^2 y(L,t)=0\)</span>. If the terminations were rather clamped, it would mean the strings are held by a block of finite length, this imposes <span class="math inline">\(\partial_x y=0\)</span> while giving arbitrary torque.</p>
+<p>Real terminations sit somewhere between the two, since piano strings bear on agraffes and capo bars that are nearly but not quite point contacts. We take the hinged case, mostly because it is the one that admits a closed-form solution, and it is the common practise in literature.</p>
+<h3 id="modelling-hammer-string-interaction">2.2 Modelling hammer-string interaction</h3>
+<h4 id="the-equation-for-the-hammer">2.2.1 The equation for the hammer</h4>
+<p>We model the hammer as small point-like weight with a compressible padding thrown at the string. The quantity that is determined by the player pressing the keys is the velocity of the key.</p>
+<p>We start with a standard power law contact used everywhere in the piano literature. Additionally we have to make the stiffness (spring-constant in other words) velocity dependent. This is a relatively simple way of modelling the viscoelasticity of the rubber/urethane covering the hammers. Qualitatively: a slowly compressed polymer yields to the stress while a a quickly struck one stiffens up, because the polymers inside the material have no time to rearrange.</p>
+<p>Let <span class="math inline">\(x_h(t)\)</span> be the hammer position and <span class="math inline">\(y_s(t) = y(x_0,t)\)</span> the string displacement at the strike point <span class="math inline">\(x_0\)</span>. The compression of the facing is:</p>
+<p><span class="math display">\[\delta(t) = x_h(t) - y_s(t), \qquad \delta_+=\max(\delta,0)\]</span></p>
+<p>Then with <span class="math inline">\(m_h\)</span> as hammer mass, <span class="math inline">\(K_0\)</span> as absolute stiffness, and <span class="math inline">\(v_{ref}\)</span> as a normalisation term:</p>
+<p><span class="math display">\[\;F(t) = K_0\left(\frac{v_0}{v_{\text{ref}}}\right)^{q}\delta_+^{\,p}\;, \qquad m_h\,\ddot x_h = -F(t)\]</span></p>
+<p>There is no direct source for the exponents <span class="math inline">\(p,q\)</span> in this case according to the literature, given the unusual materials used in the CP-80. They are to be fitted later.</p>
+<h4 id="the-contact-patch">2.2.2 The contact patch</h4>
+<p>A real hammer does not touch the string at one point. Its soft covering pushes against the string over a patch several millimetres wide. We keep the point-like description of the hammer dynamics and put the width into a separate spatial factor, writing the force per unit length as</p>
+<p><span class="math display">\[
+f(x,t)=F(t)\,G(x),\qquad \int_0^L G(x)\,dx=1
+\]</span></p>
+<p>Similarly, instead of reading the string displacement at a single point, the hammer sees the patch-weighted average</p>
+<p><span class="math display">\[
+\bar y_s(t)=\int_0^L G(x)y(x,t)\,dx\qquad \delta(t)=x_h(t)-\bar y_s(t)
+\]</span></p>
+<p>Note that holding <span class="math inline">\(G\)</span> fixed during the strike is a simplification. In reality, the contact area grows as the facing flattens and shrinks again as it recovers.</p>
+<p>The width mainly affects which vibrations the hammer can excite. A string vibrating in a fine, rapidly alternating pattern has neighbouring regions moving in opposite directions. A hammer wide enough to cover both pushes on them at once, so their contributions partly cancel. A wide contact therefore excites low spatial frequencies efficiently and attenuates high spatial frequencies. This is important when fitting the initial harmonic content of the notes.</p>
+<h4 id="contact-time">2.2.3 Contact time</h4>
+<p>The contact law also gives a characteristic duration for the force pulse. Ignoring the motion of the string, the resulting scaling is</p>
+<p><span class="math display">\[
+\tau\propto\left(\frac{m_h}{K_0}\right)^{\frac{1}{p+1}}v_0^{\frac{1-p-q}{1+p}},
+\]</span></p>
+<p>where the fixed factor involving <span class="math inline">\(v_{\mathrm{ref}}\)</span> has been absorbed into the proportionality constant. Thus higher impact velocities produce shorter contacts, and consequently a different spectral balance. This is the mechanism in the model by which playing harder changes the tone rather than merely the volume.</p>
+<p>For C4, the isolated-contact estimate gives roughly <span class="math inline">\(0.7,\mathrm{ms}\)</span>. The fully coupled simulation gives about <span class="math inline">\(1.9,\mathrm{ms}\)</span> because the string moves during contact. The estimate is therefore useful as a scale for the interaction, but the actual force pulse is generated by the coupled numerical model.</p>
+<h4 id="other-models-of-rate-hardening-and-viscoelasticity">2.2.4 Other models of rate hardening and viscoelasticity</h4>
+<p>The impact stiffness can be made velocity-dependent in several ways. The model used here is the simplest of the following three.</p>
+<table>
+<colgroup>
+<col style="width: 27%" />
+<col style="width: 72%" />
+</colgroup>
+<thead>
+<tr>
+<th>Model</th>
+<th>Force law</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Power law with rate hardening</td>
+<td><span class="math inline">\(F=K_0\left(\dfrac{v_0}{v_{\mathrm{ref}}}\right)^q\delta_+^p\)</span></td>
+</tr>
+<tr>
+<td>Hunt–Crossley</td>
+<td><span class="math inline">\(F=K\delta_+^p(1+\alpha\dot{\delta})\)</span></td>
+</tr>
+<tr>
+<td>Stulov-type hereditary model</td>
+<td><span class="math inline">\(F=K_e\delta_+^p+z(t)\)</span>, <span class="math inline">\(\dot{z}+\dfrac{z}{\tau_f}=K_f\dfrac{d}{dt}\delta_+^p\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>The Hunt–Crossley model multiplies the elastic force by a factor involving the instantaneous compression rate. Since this factor changes sign between loading and unloading, the model produces a dissipative difference between the two parts of the contact. Its coefficient of restitution can therefore depend on the impact velocity.</p>
+<p>The Stulov model adds a memory variable with an exponential relaxation. The force depends not only on the current compression but also on the recent compression history. Yielding to a more realistic hysteresis loop and an asymmetric force pulse.</p>
+<p>In our model, the impact velocity is sampled once and used to set the stiffness. There is no contact damping or hysteresis, so the contact is lossless and time-symmetric. I tried the more detailed models while tuning the parameters, but their additional complexity did not improve the result enough to justify using them.</p>
+<h3 id="piezoelectric-pickups">2.3 Piezoelectric pickups</h3>
+<p>Piezoelectricity couples the mechanical and electrical responses of a material. In the linear regime, mechanical stress produces electric displacement, while an electric field produces strain. For the pickup’s readout, we only need the direct piezoelectric effect; the converse coupling from electric field to mechanical strain will not be modelled. Since the notes use the same type of pickup, we can discuss the electrical relationship for a single element.</p>
+<p>The relevant constitutive equation is</p>
+<p><span class="math display">\[
+D_i=\sum_{j,k}d_{ijk}\sigma_{jk}
++\sum_j\varepsilon_{ij}^{T}E_j,
+\]</span></p>
+<p>where <span class="math inline">\(\sigma\)</span> is the mechanical stress, <span class="math inline">\(E\)</span> the electric field, and <span class="math inline">\(D\)</span> the electric displacement. The permittivity <span class="math inline">\(\varepsilon^{T}\)</span> describes the ordinary dielectric response, while <span class="math inline">\(d\)</span> contains the piezoelectric coupling.</p>
+<p>Almost all of this tensor structure is irrelevant for the approximation used here. Let the <span class="math inline">\(1\)</span>-axis be the direction normal to the electrodes and along the relevant loading and poling direction. Assuming mainly longitudinal loading, the equation reduces to a scalar equation:</p>
+<p><span class="math display">\[D=d\sigma  +\varepsilon E. \]</span></p>
+<p>Let <span class="math inline">\(A\)</span> be the electrode area and <span class="math inline">\(h\)</span> the thickness of the pickup. If the stress is approximately uniform,</p>
+<p><span class="math display">\[
+F_b=A\sigma,
+\qquad
+Q=AD,
+\]</span></p>
+<p>where <span class="math inline">\(F_b\)</span> is the force transmitted to the pickup and <span class="math inline">\(Q\)</span> is the charge on one electrode. Taking <span class="math inline">\(V\)</span> as the voltage across the element gives <span class="math inline">\(E\approx -V/h\)</span>, and therefore</p>
+<p><span class="math display">\[
+Q=d\, F_b-C_pV,
+\qquad
+C_p=\frac{\varepsilon A}{h}.
+\]</span></p>
+<p>The CP-80 has a high-impedance buffer, which means that very little current leaves the electrodes, so charge is approximately constant: <span class="math inline">\(\dot Q=0\)</span>, consequently,</p>
+<p><span class="math display">\[
+C_p\dot V=d\,\dot F_b,
+\]</span></p>
+<p>and, ignoring a constant voltage offset:</p>
+<p><span class="math display">\[
+V_{\mathrm{oc}}(t)=\frac{d}{C_p}F_b(t).
+\]</span></p>
+<p>The input circuit is not perfectly open. Leakage through the pickup and the buffer can be represented by an effective resistance <span class="math inline">\(R_{\mathrm{eff}}\)</span> in parallel with <span class="math inline">\(C_p\)</span>. The resulting electrical model is</p>
+<p><span class="math display">\[
+C_p\dot V+\frac{V}{R_{\mathrm{eff}}}
+=d\,\dot F_b.
+\]</span></p>
+<p>In the frequency domain, <span class="math display">\[
+\frac{V(s)}{F_b(s)}=\frac{d}{C_p}
+\frac{s}{s+1/(R_{\mathrm{eff}}C_p)}.
+\]</span></p>
+<p>The pickup therefore behaves like a force-to-voltage converter followed by a high-pass filter. Its cutoff frequency is</p>
+<p><span class="math display">\[
+f_c=\frac{1}{2\pi R_{\mathrm{eff}}C_p}.
+\]</span></p>
+<p>The force itself comes from the transverse component of the string tension at the termination:</p>
+<p><span class="math display">\[F_b=\pm T  \left.\frac{\partial y}{\partial x}\right|_{x=L}\]</span></p>
+<p>If two strings belong to the same note, their contributions are added. Any fixed mechanical factor caused by the bridge geometry can be absorbed into the overall gain. The equalizer and stereo tremolo are applied after this pickup model.</p>
+<h2 id="solving-the-model">3 Solving the model</h2>
+<h3 id="modal-decomposition">3.1 Modal decomposition</h3>
+<h4 id="obtaining-the-modal-equation">3.1.1 Obtaining the modal equation</h4>
+<p>The string has hinged boundary conditions, and so it is natural (every function in the series satisfies <span class="math inline">\(y=0\)</span> and <span class="math inline">\(\partial_x^2y=0\)</span> at both endpoints) to expand it as a Fourier sine series on the interval <span class="math inline">\([0,L]\)</span>:</p>
+<p><span class="math display">\[
+y(x,t)=\sum_{n=1}^{\infty}q_n(t)\sin(k_nx),\qquad k_n=\frac{n\pi}{L}.
+\]</span></p>
+<p>With the coefficients:</p>
+<p><span class="math display">\[
+q_n(t)=\frac{2}{L}\int_0^Ly(x,t)\sin(k_nx),dx.
+\]</span></p>
+<p><span class="math inline">\(2/L\)</span> comes from normalisation:</p>
+<p><span class="math display">\[
+\int_0^L\sin(k_nx)\sin(k_mx),dx=\frac{L}{2}\delta_{nm}.
+\]</span></p>
+<p>The spatial derivatives act on each sine function like so:</p>
+<p><span class="math display">\[
+\partial_x^2\sin(k_nx)=-k_n^2\sin(k_nx),\qquad \partial_x^4\sin(k_nx)=k_n^4\sin(k_nx).
+\]</span></p>
+<p>Accordingly substituting the Fourier series into the string equation gives:</p>
+<p><span class="math display">\[
+\begin{gathered}
+\mu \,\partial_t^2y=
+T\,\partial_x^2y
+-2\mu b_1\,\partial_t y
++\eta T\,\partial_x^2\partial_t y
+-EI\,\partial_x^4y
++f(x,t) \\[6pt]
+\Downarrow \\[6pt]
+\mu\sum_{i=1}^{\infty}\left[\ddot q_i+\left(2b_1+\frac{\eta T}{\mu}k_i^2\right)\dot q_i+\frac{Tk_i^2+EI k_i^4}{\mu}q_i\right]\sin(k_ix)=f(x,t)
+\end{gathered}
+\]</span></p>
+<p>Multiplying by <span class="math inline">\(\sin(k_nx)\)</span> and integrating from <span class="math inline">\(0\)</span> to <span class="math inline">\(L\)</span> isolates the <span class="math inline">\(n\)</span>th term through orthogonality:</p>
+<p><span class="math display">\[
+\frac{\mu L}{2}\left[\ddot q_n+\left(2b_1+\frac{\eta T}{\mu}k_n^2\right)\dot q_n+\frac{Tk_n^2+EI k_n^4}{\mu}q_n\right]=\int_0^Lf(x,t)\sin(k_nx),dx.
+\]</span></p>
+<p>Let <span class="math inline">\(M=\mu L\)</span> be the total mass of the string, and define</p>
+<p><span class="math display">\[
+\omega_n^2=\frac{Tk_n^2+EI k_n^4}{\mu},\qquad \sigma_n=b_1+\frac{\eta T}{2\mu}k_n^2.
+\]</span></p>
+<p>For the hammer force distribution <span class="math inline">\(f(x,t)=F(t)G(x)\)</span>, we define coupling coefficients as:</p>
+<p><span class="math display">\[
+c_n=\int_0^LG(x)\sin(k_nx),dx.
+\]</span></p>
+<p>The modal equation finally becomes:</p>
+<p><span class="math display">\[
+\ddot q_n+2\sigma_n\dot q_n+\omega_n^2q_n=\frac{2c_n}{M}F(t).
+\]</span></p>
+<h4 id="change-of-parameters">3.1.2 Change of parameters</h4>
+<p>The modal frequencies are:</p>
+<p><span class="math display">\[
+\omega_n^2=\frac{Tk_n^2+EI k_n^4}{\mu}=n^2\omega_0^2(1+Bn^2),\qquad \omega_0=\frac{\pi}{L}\sqrt{\frac{T}{\mu}},\qquad B=\frac{\pi^2EI}{TL^2}.
+\]</span></p>
+<p>Here <span class="math inline">\(\omega_0\)</span> is the fundamental angular frequency that the string would have if it had no bending stiffness. This equation clearly shows the <em>inharmonicity</em> of the piano discussed earlier.</p>
+<p>We can express <span class="math inline">\(B\)</span> in terms of the string’s dimensions with <span class="math inline">\(f_0=\omega_0/(2\pi)\)</span> (the real fundamental frequency is <span class="math inline">\(f_{\mathrm{fund}}=f_0\sqrt{1+B}\)</span> ) and <span class="math inline">\(I=\pi d^4/64\)</span> as:</p>
+<p><span class="math display">\[
+B=\frac{\pi^3Ed^4}{256\mu L^4f_0^2}.
+\]</span> If we take <span class="math inline">\(f_{fund}\approx f_0\)</span> , we can see that <span class="math inline">\(B\propto L^{-4}\)</span>. The CP-80 bass strings are approximately <span class="math inline">\(67.9,\mathrm{cm}\)</span> long, compared with roughly <span class="math inline">\(213,\mathrm{cm}\)</span> on a concert grand. The ratio of lengths is about <span class="math inline">\(3.14\)</span>, so the short scale alone would increase <span class="math inline">\(B\)</span> by approximately <span class="math inline">\(3.14^4\approx97\)</span>.</p>
+<p>Wound bass strings reduce this difference because the winding increases the linear density while the bending stiffness remains largely controlled by the core. In the fitted strings, the increase is closer to a factor of <span class="math inline">\(20\)</span>.</p>
+<p>The damping rates are</p>
+<p><span class="math display">\[
+\sigma_n=b_1+\frac{\eta T}{2\mu}k_n^2=b_1+b_3\,\omega_n^2,\qquad b_3=\frac{\eta}{2(1+Bn^2)}.
+\]</span></p>
+<h4 id="free-string-solution">3.1.3 Free string solution</h4>
+<p>Once the hammer leaves the string, <span class="math inline">\(F(t)=0\)</span>:</p>
+<p><span class="math display">\[
+\ddot q_n+2\sigma_n\dot q_n+\omega_n^2q_n=0.
+\]</span></p>
+<p>Using <span class="math inline">\(\omega_{d,n}=\sqrt{\omega_n^2-\sigma_n^2}\)</span> , if the hammer leaves at time <span class="math inline">\(t_0\)</span>, the subsequent motion of mode <span class="math inline">\(n\)</span> is</p>
+<p><span class="math display">\[
+q_n(t)=e^{-\sigma_n(t-t_0)}\left[q_n(t_0)\cos\left(\omega_{d,n}(t-t_0)\right)+\frac{\dot q_n(t_0)+\sigma_nq_n(t_0)}{\omega_{d,n}}\sin\left(\omega_{d,n}(t-t_0)\right)\right].
+\]</span></p>
+<p>Another useful thing to consider is the corresponding discrete-time recursion, with the discrete time written as <span class="math inline">\(t_k=k\tau\)</span> and <span class="math inline">\(q_n^k=q_n(t_k)\)</span>:</p>
+<p><span class="math display">\[
+q_n^{k+1}=2e^{-\sigma_n\tau}\cos(\omega_{d,n}\tau)q_n^k-e^{-2\sigma_n\tau}q_n^{k-1}.
+\]</span></p>
+<p>This is an exact recurrence for the free mode at the sampling times. During hammer contact, a force-dependent input term is added to the same recurrence.</p>
+<h3 id="hammer-coupling">3.2 Hammer coupling</h3>
+<p>For a rectangular contact patch of width <span class="math inline">\(a\)</span> centred at <span class="math inline">\(x_0\)</span>,</p>
+<p><span class="math display">\[
+c_n=\frac{1}{a}\int_{x_0-a/2}^{x_0+a/2}\sin\left(\frac{n\pi x}{L}\right),dx=\sin\left(\frac{n\pi x_0}{L}\right)\operatorname{sinc}\left(\frac{n\pi a}{2L}\right),
+\]</span></p>
+<p>where</p>
+<p><span class="math display">\[
+\operatorname{sinc}(z)=\frac{\sin z}{z}.
+\]</span></p>
+<p>The first factor depends on the strike position. For example, a point strike at <span class="math inline">\(x_0=L/7\)</span> does not excite the seventh mode in this idealised model. The second factor describes the cancellation caused by the finite contact width. Its first zero occurs at <span class="math inline">\(n=2L/a\)</span>, when the patch spans one wavelength of the mode.</p>
+<p>The hammer feels the patch-weighted displacement</p>
+<p><span class="math display">\[
+\bar y_s(t)=\int_0^LG(x)y(x,t),dx=\sum_{i=1}^{\infty}c_iq_i(t).
+\]</span></p>
+<p>Recalling the hammer model,</p>
+<p><span class="math display">\[
+\delta(t)=x_h(t)-\bar y_s(t),\qquad F(t)=K_0\left(\frac{v_0}{v_{\mathrm{ref}}}\right)^q\delta_+(t)^p,\qquad \delta_+(t)=\max(\delta(t),0).
+\]</span> <span class="math display">\[
+m_h\ddot x_h(t)=-F(t).
+\]</span></p>
+<p>we can assemble the final system of equations describing hammer-string interaction with adding the string:</p>
+<p><span class="math display">\[
+\left\{
+\begin{gathered}
+F(t)=K_0\left(\frac{v_0}{v_{\mathrm{ref}}}\right)^q\max\left(x_h(t)-\sum_{i=1}^{\infty}c_iq_i(t),0\right)^p
+\\[6pt]
+m_h\ddot x_h(t)=-F(t)
+\\[6pt]
+\ddot q_n+2\sigma_n\dot q_n+\omega_n^2q_n=\frac{2c_n}{M}F(t)
+\end{gathered}
+\right.
+\]</span></p>
+<p>This is clearly not solvable analytically, so we have to do this part numerically. Here a</p>
+<h4 id="the-pickup-signal">3.3 The pickup signal</h4>
+<p>The piezo pickup reads the transverse force at the string termination:</p>
+<p><span class="math display">\[
+F_b(t)=\pm T\left.\frac{\partial y}{\partial x}\right|_{x=L}=\pm\frac{\pi T}{L}\sum_{n=1}^{\infty}(-1)^n n q_n(t).
+\]</span></p>
+<p>If two strings belong to the same note, their bridge forces are added before applying the pickup model. The electrical high-pass, equalizer, and stereo tremolo from section 2.3 are then applied to <span class="math inline">\(V(t) \propto F_b(t)\)</span>. This gives the concrete output of the model.</p>
+<h3 id="numerical-simulation">3.4 Numerical simulation</h3>
+<h4 id="modal-truncation">3.4.1 Modal truncation</h4>
+<p>The Fourier expansion is infinite, but the implementation retains the first <span class="math inline">\(N\)</span> modes:</p>
+<p><span class="math display">\[
+y_N(x,t)=\sum_{n=1}^{N}q_n(t)\sin(k_nx).
+\]</span></p>
+<p>The displacement seen by the hammer is approximated by</p>
+<p><span class="math display">\[
+\bar y_{s,N}(t)=\sum_{n=1}^{N}c_nq_n(t).
+\]</span></p>
+<p>The spatial truncation is the first numerical approximation. The number of modes must be large enough that increasing <span class="math inline">\(N\)</span> no longer changes the bridge signal or the audible output too much.</p>
+<h4 id="one-contact-step">3.4.2 One contact step</h4>
+<p>At this point, the continuous system has been reduced to a finite set of coupled nonlinear ordinary differential equations. The remaining step is to discretise time.</p>
+<p>Let <span class="math inline">\(t_j=j\tau\)</span>, where <span class="math inline">\(\tau\)</span> is the internal timestep. For readability, we use a single index <span class="math inline">\(i=1,\ldots,M\)</span> for the resonator. The index <span class="math inline">\(i\)</span> is an implementation index, not a physical string index; each slot has its own <span class="math inline">\(c_i\)</span>, <span class="math inline">\(\omega_i\)</span>, <span class="math inline">\(\sigma_i\)</span>, <span class="math inline">\(\beta_i\)</span>, and bridge weight <span class="math inline">\(w_i\)</span>.</p>
+<p><span class="math display">\[
+x_h^j=x_h(t_j),\qquad v_h^j=\dot{x}_h(t_j),\qquad q_i^j=q_i(t_j).
+\]</span></p>
+<p>The state also contains a contact flag <span class="math inline">\(\chi^j\)</span>, a damper flag <span class="math inline">\(\chi_d^j\)</span>, and a contact-age counter <span class="math inline">\(a^j\)</span> used by the numerical timeout.</p>
+<p>At each contact step, the string displacement at the hammer position is evaluated from the current modal state:</p>
+<p><span class="math display">\[y_s^j=\sum_{i=1}^{M}c_iq_i^j,\qquad \delta^j=x_h^j-y_s^j.\]</span></p>
+<p>The rate-hardening factor uses the positive initial hammer speed for the current strike, not the updated velocity <span class="math inline">\(v_h^j\)</span>:</p>
+<p><span class="math display">\[K_{\mathrm{eff}}=K_0\left(\frac{v_{\mathrm{init}}}{v_{\mathrm{ref}}}\right)^{q}.\]</span></p>
+<p>The contact force is</p>
+<p><span class="math display">\[
+F_{\mathrm{raw}}^j=\begin{cases}K_{\mathrm{eff}}\max(\delta^j,0)_+^p,&amp; \chi^j=1\\ 0,&amp; \chi^j=0\end{cases}
+\]</span></p>
+<p>The hammer is advanced with semi-implicit Euler. The velocity is updated first, and the new velocity is then used for the position update:</p>
+<p><span class="math display">\[v_h^{j+1}=v_h^j-\frac{\tau}{m_h}F^j,\qquad x_h^{j+1}=x_h^j+\tau v_h^{j+1}.\]</span></p>
+<p>For each emitted resonator, let <span class="math inline">\(\sigma_i\)</span> be its current damping rate and define</p>
+<p><span class="math display">\[\omega_{d,i}=\sqrt{\omega_i^2-\sigma_i^2},\qquad \rho_i=e^{-\sigma_i\tau},\qquad \theta_i=\omega_{d,i}\tau,\]</span></p>
+<p><span class="math display">\[\beta_i=\frac{2}{m_{\mathrm{total}}}c_i\tau\rho_i\frac{\sin(\theta_i)}{\omega_{d,i}}.\]</span></p>
+<p>The modal recurrence is taken from the free string case and it is updated with a force term (see appendix):</p>
+<p><span class="math display">\[q_i^{j+1}=2\rho_i\cos(\theta_i)q_i^j-\rho_i^2q_i^{j-1}+\beta_iF^j.\]</span></p>
+<p>The force is evaluated before the modal update, so only the current sample <span class="math inline">\(F^j\)</span> appears in the recurrence. Once contact has ended, <span class="math inline">\(F^j=0\)</span> and the modes continue with the free-string recurrence.</p>
+<p>The contact age is incremented after each contact sample:</p>
+<p><span class="math display">\[a^{j+1}=a^j+1.\]</span></p>
+<p>The implementation clears contact when the current compression has disappeared and the updated hammer velocity is directed away from the string, or when the timeout is exceeded:</p>
+<p><span class="math display">\[\chi^{j+1}=0\quad\text{if}\quad\bigl(\delta^j\leq0\ \text{and}\ v_h^{j+1}&lt;0\bigr)\ \text{or}\ \bigl(a^{j+1}&gt;a_{\max}\bigr),\]</span></p>
+<p>with <span class="math inline">\(a_{\max}=2000\)</span> internal samples.</p>
+<p>After the modal update, the bridge-readout signal is</p>
+<p><span class="math display">\[F_b^{j+1}=\sum_{i=1}^{M}w_iq_i^{j+1}.\]</span></p>
+<p>The precomputed bridge weight <span class="math inline">\(w_i\)</span> contains the termination sign <span class="math inline">\((-1)^n\)</span>, the partial factor <span class="math inline">\(n\)</span>, the unison or pickup-polarisation weight, and the normalized bridge scale. The coupling coefficient <span class="math inline">\(c_i\)</span> contains the strike-position and finite-width factors.</p>
+<p>The implementation does not store the physical factor <span class="math inline">\(\pi T/L\)</span> literally. Its normalized bridge factor is equivalent to</p>
+<p><span class="math display">\[S_{\mathrm{bridge}}=\frac{(m_{\mathrm{total}}/n_{\mathrm{strings}})f_0^2}{m_{\mathrm{ref}}f_{\mathrm{ref}}^2}.\]</span></p>
+<p>The code folds this factor into the bridge readout weights and applies the remaining per-voice calibration through <code>outGain</code>. Thus <span class="math inline">\(F_b\)</span> denotes a normalized bridge-readout signal rather than a quantity retained in newtons.</p>
+<p>When the key is released and the sustain pedal is not holding the note, the damper flag changes to <span class="math inline">\(\chi_d=1\)</span>. The intended effective damping for each emitted resonator is</p>
+<p><span class="math display">\[\sigma_{i,\mathrm{eff}}=\sigma_i^{(0)}+\chi_d\,\sigma_{\mathrm{damper}}.\]</span></p>
+<p>The modal states are not reset; the existing oscillation continues with the modified poles. In the current implementation, damper release rebuilds the pole coefficients but retains the note-on input coefficient <code>bIn</code>; therefore <span class="math inline">\(\beta_i\)</span> is not recomputed at release. The current release path also does not retain the fast partner’s note-on damping multiplier.</p>
+<h4 id="double-strung-notes">3.4.3 Double strung notes</h4>
+<p>A double-strung note is not represented by two independent modal banks. The note specification doubles the total vibrating string-group mass, so the total hammer force is applied to one lumped bank. In the symmetric case this is equivalent to applying <span class="math inline">\(F^j/2\)</span> to each physical string: with single-string mass <span class="math inline">\(m_s\)</span>, the separate-string input scale is <span class="math inline">\((2/m_s)(F^j/2)\)</span>, while the lumped-bank scale is <span class="math inline">\((2/(2m_s))F^j\)</span>.</p>
+<p>The bridge contribution is then doubled through the output weights. The normalized bridge factor is computed from the single-string mass, <span class="math inline">\(m_{\mathrm{total}}/n_{\mathrm{strings}}\)</span>, while the resonator weights contain the factor <span class="math inline">\(n_{\mathrm{strings}}\)</span>. Thus the second string contributes through the total mass, the summed bridge output, and the unison frequency split; it does not have a separate state or an explicit string–string coupling path.</p>
+<p>For a partial with <span class="math inline">\(n\leq k_{\mathrm{TwinBelow}}\)</span>, the bank emits a second resonator slot. Both slots receive the same force sample, but they have separate modal frequencies, damping coefficients, and bridge weights. For double-strung notes, the extra slot carries the note-specific unison frequency split and helps reproduce the beating and two-stage decay of the unison. These slots are a reduced representation of the physical string and transverse-mode structure, not a literal one-resonator-per-string construction. For single-strung notes, the current value of <span class="math inline">\(k_{\mathrm{PolarHz}}\)</span> is zero, so the two slots are frequency-degenerate and differ only in damping and bridge weight.</p>
+<p>For <span class="math inline">\(n&gt;k_{\mathrm{TwinBelow}}\)</span>, only one slot is emitted. Its bridge weight is the sum of the two partner weights, preserving the nominal bridge weight while discarding the fine beating above the cutoff. The low-partial slots remain separate states, but both are driven by the same <span class="math inline">\(F^j\)</span> and do not exchange energy.</p>
+<p>When the key is released and the sustain pedal is not holding the note, the damper flag changes to <span class="math inline">\(\chi_d=1\)</span>. The intended effective damping for each emitted resonator is</p>
+<p><span class="math display">\[\sigma_{i,\mathrm{eff}}=\sigma_i^{(0)}+\chi_d\,\sigma_{\mathrm{damper}}.\]</span></p>
+<p>The modal states are not reset; the existing oscillation continues with the modified poles. In the current implementation, damper release rebuilds the pole coefficients but retains the note-on input coefficient <code>bIn</code>; therefore <span class="math inline">\(\beta_i\)</span> is not recomputed at release. The current release path also does not retain the fast partner’s note-on damping multiplier.</p>
+<h2 id="result">5 Result</h2>
+<h2 id="conclusion">6 Conclusion</h2>
+<h2 id="references">7 References</h2>
+<ol type="1">
+<li>A. Chaigne and A. Askenfelt, “Numerical simulations of piano strings. I. A physical model for a struck string using finite difference methods,” <em>The Journal of the Acoustical Society of America</em> <strong>95</strong>, 1112 (1994), <a href="https://doi.org/10.1121/1.408459">doi:10.1121/1.408459</a>.</li>
+<li>A. Chaigne and A. Askenfelt, “Numerical simulations of piano strings. II. Comparisons with measurements and systematic exploration of some hammer-string parameters,” <em>The Journal of the Acoustical Society of America</em> <strong>95</strong>, 1631–1640 (1994), <a href="https://doi.org/10.1121/1.408549">doi:10.1121/1.408549</a>.</li>
+<li>B. Bank and J. Chabassier, “Model-Based Digital Pianos: From Physics to Sound Synthesis,” <em>IEEE Signal Processing Magazine</em> <strong>36</strong>(1), 103–114 (2019). A bibliography and related piano-modelling publications are collected on <a href="https://home.mit.bme.hu/~bank/publist/index.html">Balázs Bank’s publication page</a>.</li>
+<li>Wikipedia contributors, “Electric grand piano,” <em>Wikipedia, The Free Encyclopedia</em>, last edited November 9, 2025, <a href="https://en.wikipedia.org/wiki/Electric_grand_piano?utm_source=chatgpt.com">https://en.wikipedia.org/wiki/Electric_grand_piano</a>.</li>
+<li>Yamaha, <em>CP-80 operating manual</em>: circuit diagram, information about the instrument, and CP-80 tuning-curve.</li>
+<li>Greg Sullivan, <em>E-Pianos</em>, CP80 sample set, v1.3 (2004), https://github.com/sfzinstruments/GregSullivan.E-Pianos.</li>
+</ol>
+<h2 id="appendix">8 Appendix</h2>
+<h3 id="quantity-table">8.1 Quantity table</h3>
+<table>
+<thead>
+<tr>
+<th>symbol</th>
+<th>meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="math inline">\(x,t\)</span></td>
+<td>string position and time</td>
+</tr>
+<tr>
+<td><span class="math inline">\(L\)</span></td>
+<td>vibrating string length</td>
+</tr>
+<tr>
+<td><span class="math inline">\(\mu\)</span></td>
+<td>linear string density</td>
+</tr>
+<tr>
+<td><span class="math inline">\(T\)</span></td>
+<td>string tension</td>
+</tr>
+<tr>
+<td><span class="math inline">\(E,I\)</span></td>
+<td>Young’s modulus and second moment</td>
+</tr>
+<tr>
+<td><span class="math inline">\(q_n\)</span></td>
+<td>modal displacement</td>
+</tr>
+<tr>
+<td><span class="math inline">\(M=\mu L\)</span></td>
+<td>mass of one string</td>
+</tr>
+<tr>
+<td><span class="math inline">\(c_n\)</span></td>
+<td>strike/readback spatial coupling</td>
+</tr>
+<tr>
+<td><span class="math inline">\(B\)</span></td>
+<td>inharmonicity coefficient</td>
+</tr>
+<tr>
+<td><span class="math inline">\(b_1\)</span></td>
+<td>flat modal decay coefficient</td>
+</tr>
+<tr>
+<td><span class="math inline">\(b_3\)</span></td>
+<td>effective <span class="math inline">\(\omega^2\)</span> decay coefficient</td>
+</tr>
+<tr>
+<td><span class="math inline">\(m_h\)</span></td>
+<td>hammer mass</td>
+</tr>
+<tr>
+<td><span class="math inline">\(K,p,q\)</span></td>
+<td>contact stiffness, compression exponent, rate exponent</td>
+</tr>
+<tr>
+<td><span class="math inline">\(hW\)</span></td>
+<td>contact width divided by string length</td>
+</tr>
+<tr>
+<td><span class="math inline">\(F_b\)</span></td>
+<td>force at the bridge/pickup</td>
+</tr>
+</tbody>
+</table>
+<h3 id="the-analytical-contact-time-derivation">8.2 The analytical contact time derivation</h3>
+<p>If we assume that the string does not move, we can calculate the contact time analytically. This gives a useful reference for understanding the model’s parameters and where they matter. Omitting the string gives:</p>
+<p><span class="math display">\[
+m_h\,\ddot{\delta}=-K\delta^p
+\]</span></p>
+<p>The stiffness <span class="math inline">\(K\)</span> is constant during one impact. Multiplying by <span class="math inline">\(\dot{\delta}\)</span> turns both sides into total derivatives:</p>
+<p><span class="math display">\[
+\frac{d}{dt}\left(\frac{1}{2}m_h\dot{\delta}^{2}\right)=-\frac{d}{dt}\left(\frac{K\delta^{p+1}}{p+1}\right)\qquad\Longrightarrow\qquad\frac{1}{2}m_h\dot{\delta}^{2}+\frac{K\delta^{p+1}}{p+1}=\frac{1}{2}m_hv_0^2
+\]</span></p>
+<p>At maximum compression, <span class="math inline">\(\dot{\delta}=0\)</span>, so all the kinetic energy is stored in the compressed facing:</p>
+<p><span class="math display">\[
+\delta_{\max}=\left(\frac{(p+1)m_hv_0^2}{2K}\right)^{\frac{1}{p+1}}
+\]</span></p>
+<p>Solving the energy equation for <span class="math inline">\(\dot{\delta}\)</span> and eliminating <span class="math inline">\(K\)</span> through <span class="math inline">\(\delta_{\max}\)</span> leaves a trajectory whose shape depends only on <span class="math inline">\(p\)</span>:</p>
+<p><span class="math display">\[
+\dot{\delta}=v_0\sqrt{1-\left(\frac{\delta}{\delta_{\max}}\right)^{p+1}}
+\]</span></p>
+<p>The contact lasts twice the time to maximum compression, since the motion is time-reversible. Writing <span class="math inline">\(dt=d\delta/\dot{\delta}\)</span> and substituting <span class="math inline">\(s=\delta/\delta_{\max}\)</span> gives:</p>
+<p><span class="math display">\[
+\tau=\frac{2}{v_0}\int_0^{\delta_{\max}}\frac{d\delta}{\sqrt{1-(\delta/\delta_{\max})^{p+1}}}=\frac{2\delta_{\max}}{v_0}\int_0^1\frac{ds}{\sqrt{1-s^{p+1}}}
+\]</span></p>
+<p>The remaining integral is a Beta function. Substituting <span class="math inline">\(u=s^{p+1}\)</span> gives:</p>
+<p><span class="math display">\[
+\int_0^1\frac{ds}{\sqrt{1-s^{p+1}}}=\frac{1}{p+1}\int_0^1u^{\frac{1}{p+1}-1}(1-u)^{-\frac{1}{2}}\,du=\frac{1}{p+1}B\left(\frac{1}{p+1},\frac{1}{2}\right)
+\]</span></p>
+<p>Therefore,</p>
+<p><span class="math display">\[
+\tau=\frac{2\delta_{\max}}{v_0(p+1)}B\left(\frac{1}{p+1},\frac{1}{2}\right)
+\]</span></p>
+<p>For <span class="math inline">\(p=2\)</span>, the dimensionless integral factor is</p>
+<p><span class="math display">\[
+\frac{1}{3}B\left(\frac{1}{3},\frac{1}{2}\right)\approx1.402
+\]</span></p>
+<p>In the model,</p>
+<p><span class="math display">\[
+K=K_0\left(\frac{v_0}{v_{\mathrm{ref}}}\right)^q
+\]</span></p>
+<p>Substituting this into <span class="math inline">\(\delta_{\max}\)</span> and collecting the powers of <span class="math inline">\(v_0\)</span> gives the scaling that matters:</p>
+<p><span class="math display">\[
+\boxed{\tau\propto\left(\frac{m_h}{K_0}\right)^{\frac{1}{p+1}}v_0^{\frac{1-p-q}{1+p}}}
+\]</span></p>
+<h3 id="recurrence-derivation">8.3 Recurrence derivation</h3>
+<p><span class="math display">\[
+\ddot q_n+2\sigma_n\dot q_n+\omega_n^2q_n=0.
+\]</span></p>
+<p>With the ansatz: <span class="math inline">\(q(t)=e^{rt}\)</span> the characteristic equations roots are:</p>
+<p><span class="math display">\[
+r_{\pm,n}=-\sigma_n\pm i\omega_{d,n}.
+\]</span></p>
+<p>Let <span class="math inline">\(t_k=k\tau\)</span> and write <span class="math inline">\(q_n^k=q_n(t_k)\)</span>. The general solution sampled at these times is</p>
+<p><span class="math display">\[
+q_n^k=C_{+,n}e^{r_{+,n}\tau k}+C_{-,n}e^{r_{-,n}\tau k}=C_{+,n}z_{+,n}^k+C_{-,n}z_{-,n}^k,
+\]</span></p>
+<p>Our recurrent relationship will be: <span class="math display">\[
+q_n^{k+1}=(z_{+,n}+z_{-,n})q_n^k-z_{+,n}z_{-,n}q_n^{k-1}.
+\]</span></p>
+<p>To verify the recurrence, substitute three consecutive samples:</p>
+<p><span class="math display">\[
+\begin{aligned}
+&amp;q_n^{k+1}-(z_{+,n}+z_{-,n})q_n^k+z_{+,n}z_{-,n}q_n^{k-1}= \\ &amp;C_{+,n}z_{+,n}^{k-1}\left[z_{+,n}^2-(z_{+,n}+z_{-,n})z_{+,n}+z_{+,n}z_{-,n}\right] \\
+&amp;+C_{-,n}z_{-,n}^{k-1}\left[z_{-,n}^2-(z_{+,n}+z_{-,n})z_{-,n}+z_{+,n}z_{-,n}\right]=0.
+\end{aligned}
+\]</span></p>
+<p>The final equality holds because each bracket factors as</p>
+<p><span class="math display">\[
+z_{\pm,n}^2-(z_{+,n}+z_{-,n})z_{\pm,n}+z_{+,n}z_{-,n}=(z_{\pm,n}-z_{+,n})(z_{\pm,n}-z_{-,n})=0.
+\]</span></p>
+<p>Using</p>
+<p><span class="math display">\[
+z_{+,n}+z_{-,n}=2e^{-\sigma_n\tau}\cos(\omega_{d,n}\tau),\qquad z_{+,n}z_{-,n}=e^{-2\sigma_n\tau},
+\]</span></p>
+<p>gives</p>
+<p><span class="math display">\[
+q_n^{k+1}=2e^{-\sigma_n\tau}\cos(\omega_{d,n}\tau)q_n^k-e^{-2\sigma_n\tau}q_n^{k-1}.
+\]</span></p>
+<h3 id="timestep">8.4 Timestep</h3>
+<p><span class="math display">\[
+\boxed{\begin{gathered}
+\text{read }\left(x_h^j,v_h^j,\{q_i^j,q_i^{j-1}\}_{i=1}^{M},\chi^j,\chi_d^j,a^j\right)\\[3pt]
+\downarrow\\[3pt]
+y_s^j=\sum_{i=1}^{M}c_iq_i^j,\qquad \delta^j=x_h^j-y_s^j\\[5pt]
+\downarrow\\[3pt]
+K_{\mathrm{eff}}=K_0\left(\frac{v_{\mathrm{init}}}{v_{\mathrm{ref}}}\right)^{q_K}\\[3pt]
+\downarrow\\[3pt]
+F_{\mathrm{raw}}^j=\begin{cases}K_{\mathrm{eff}}[\delta^j]_+^p,&amp;\chi^j=1,\\0,&amp;\chi^j=0,\end{cases}\qquad F^j=\min(F_{\mathrm{raw}}^j,F_{\max})\\[5pt]
+\downarrow\\[3pt]
+v_h^{j+1}=v_h^j-\dfrac{\tau}{m_h}F^j,\qquad x_h^{j+1}=x_h^j+\tau v_h^{j+1}\\[5pt]
+\downarrow\\[3pt]
+q_i^{j+1}=2\rho_i\cos(\theta_i)q_i^j-\rho_i^2q_i^{j-1}+\beta_iF^j\\[5pt]
+\downarrow\\[3pt]
+\chi^{j+1}=0\quad\text{if}\quad\bigl(\delta^j\leq0\land v_h^{j+1}&lt;0\bigr)\lor\bigl(a^{j+1}&gt;a_{\max}\bigr)\\[5pt]
+\downarrow\\[3pt]
+F_b^{j+1}=\sum_{i=1}^{M}w_iq_i^{j+1}\\[5pt]
+\downarrow\\[3pt]
+\text{sum voices at internal rate}\rightarrow\text{decimate}\rightarrow\text{add body}\rightarrow\text{pickup/AC filter}\rightarrow\text{tone stack}\rightarrow\text{volume}.
+\end{gathered}}
+\]</span></p>
+
+  </main>
+  <footer><small>vive la guerre éternelle — planets by <a href="https://github.com/Deep-Fold/PixelPlanets">PixelPlanets</a>.</small></footer>
+</body>
+</html>

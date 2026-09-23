@@ -1,4 +1,21 @@
-document.querySelectorAll(".markdown-content h2, .markdown-content h3").forEach((heading, index) => {
+const themeButtons = document.querySelectorAll("[data-theme-choice]");
+const setTheme = (theme) => {
+  if (theme !== "light" && theme !== "dark") return;
+  document.documentElement.dataset.theme = theme;
+  themeButtons.forEach((button) => {
+    button.setAttribute("aria-pressed", String(button.dataset.themeChoice === theme));
+  });
+  try {
+    localStorage.setItem("site-theme", theme);
+  } catch {}
+};
+
+themeButtons.forEach((button) => {
+  button.addEventListener("click", () => setTheme(button.dataset.themeChoice));
+});
+setTheme(document.documentElement.dataset.theme || "dark");
+
+document.querySelectorAll(".markdown-content h2, .markdown-content h3, .markdown-content h4, .markdown-content h5, .markdown-content h6").forEach((heading, index) => {
   const level = Number(heading.tagName.slice(1));
   const title = heading.textContent.trim();
   const content = document.createElement("div");

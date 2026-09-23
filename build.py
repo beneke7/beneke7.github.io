@@ -9,14 +9,18 @@ import subprocess
 
 ROOT = Path(__file__).resolve().parent
 CONTENT = ROOT / "content"
-NAV = (("About", "about"), ("Projects", "projects"), ("Blog", "blog"),
+NAV = (("About", "about"), ("Blog", "blog"), ("Projects", "projects"),
        ("Teaching", "teaching"), ("Music", "music"), ("Links", "links"))
-PAGES = ("index", "about", "blog", "projects", "teaching", "music", "links")
+PAGES = ("about", "blog", "projects", "teaching", "music", "links")
 PLANETS = {
     "original": "pixel-planet",
     "gas-giant": "gas-giant",
     "ice-world": "ice-world",
 }
+
+
+def page_output(slug):
+    return Path("index.html") if slug == "about" else Path(f"{slug}.html")
 
 
 def cache_version():
@@ -75,7 +79,7 @@ def convert_obsidian_syntax(text, output):
             if target.startswith("posts/"):
                 url = relative_url(Path("blog") / f"{Path(target).name}.html", output)
             elif target in PAGES:
-                url = relative_url(Path(f"{target}.html"), output)
+                url = relative_url(page_output(target), output)
             else:
                 return match.group(0)
         return f"[{label}]({url})"
@@ -94,7 +98,7 @@ def convert_obsidian_syntax(text, output):
 def convert_markdown(text, output):
     text = convert_obsidian_syntax(text, output)
     return subprocess.run(
-        ["pandoc", "--from=markdown", "--to=html5", "--wrap=none"],
+        ["pandoc", "--from=markdown-blank_before_header", "--to=html5", "--mathjax", "--wrap=none"],
         input=text, text=True, capture_output=True, check=True,
     ).stdout
 
@@ -127,7 +131,7 @@ def render_page(output, title, active, body, metadata, version):
     for label, slug in NAV:
         current = ' aria-current="page"' if active == slug else ""
         nav_items.append(
-            f'<a href="{versioned_url(Path(slug + ".html"), output, version)}"{current}>{label}</a>'
+            f'<a href="{versioned_url(page_output(slug), output, version)}"{current}>{label}</a>'
         )
     nav = "\n".join(nav_items)
     classes = ["space"]
@@ -143,15 +147,19 @@ def render_page(output, title, active, body, metadata, version):
         poster = Path("assets") / f"{asset}.png"
         planet_markup = f'''<img class="planet-gif" src="{versioned_url(Path('assets') / f'{asset}.gif', output, version)}" alt="">
     <picture><img src="{versioned_url(poster, output, version)}" alt=""></picture>'''
-    html_title = title if active == "index" else f"{title} — Beneke’s corner of the web"
+    html_title = title if active == "about" else f"{title} — Beneke’s corner of the web"
+    mathjax = '<script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>' if 'class="math ' in body else ""
+    theme_script = '''<script>try { const theme = localStorage.getItem("site-theme"); if (theme === "light" || theme === "dark") document.documentElement.dataset.theme = theme; } catch {}</script>'''
     document = f'''<!doctype html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#000000">
   <title>{escape(html_title)}</title>
+  {theme_script}
   <link rel="stylesheet" href="{prefix}style.css?v={version}">
+  {mathjax}
   <script src="{prefix}site.js?v={version}" defer></script>
 </head>
 <body>
@@ -159,9 +167,15 @@ def render_page(output, title, active, body, metadata, version):
     {stars}
     {planet_markup}
   </div>
-  <nav class="top-nav" aria-label="Main navigation">
-    {nav}
-  </nav>
+  <header>
+    <div class="theme-switch" role="group" aria-label="Color theme">
+      <button type="button" data-theme-choice="dark" aria-label="Dark mode" aria-pressed="true">☾</button>
+      <button type="button" data-theme-choice="light" aria-label="Light mode" aria-pressed="false">☼</button>
+    </div>
+    <nav class="top-nav" aria-label="Main navigation">
+      {nav}
+    </nav>
+  </header>
   <main class="markdown-content">
     {body}
   </main>
@@ -208,7 +222,7 @@ def main():
     for slug in PAGES:
         source = CONTENT / f"{slug}.md"
         metadata, markdown = read_document(source)
-        output = Path(f"{slug}.html")
+        output = page_output(slug)
         body = convert_markdown(markdown, output)
         if slug == "blog" and posts:
             links = "\n".join(
@@ -219,6 +233,7 @@ def main():
             body += f"\n<section class=\"post-list\"><h2>Posts</h2><ul>{links}</ul></section>"
         title = document_title(metadata, markdown, slug)
         render_page(output, title, slug, body, metadata, version)
+    (ROOT / "about.html").unlink(missing_ok=True)
     print(f"Built {len(PAGES)} pages and {len(posts)} blog posts.")
 
 
