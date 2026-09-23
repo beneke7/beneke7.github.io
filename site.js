@@ -81,6 +81,8 @@ document.querySelectorAll(".markdown-content h2, .markdown-content h3, .markdown
   let sibling = heading.nextElementSibling;
 
   while (sibling) {
+    const followingHeading = /^H([1-6])$/.exec(sibling.nextElementSibling?.tagName || "");
+    if (sibling.tagName === "HR" && followingHeading && Number(followingHeading[1]) <= level) break;
     const nextHeading = /^H([1-6])$/.exec(sibling.tagName);
     if (nextHeading && Number(nextHeading[1]) <= level) break;
     const nextSibling = sibling.nextElementSibling;

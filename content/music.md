@@ -61,9 +61,10 @@ He waved goodbye from his airship to the Monk. He was gifted a crate of whiskey 
 He woke up to loud drums, horns and beaming spotlights—a fair was ahead. He landed the ship on a meadow and headed towards the huge tents. A glowing sign greeted him with hefty capital letters: “WORLD’S FAIR”. As he strolled inside he saw long-lost magic along with compact and slender devices with a metallic shine. Every nation was building towards something greater, sometimes off by a notch, sometimes by a mile. He continued as a nickel samovar whistled through the air above his head.
 
 
-
 ---
 ## Album reviews
+
+This list contains short descriptions and reviews for some of my favourite or previously liked records. 
 
 - ![[mercy-mercy-mercy.jpg|Cover of Mercy, Mercy, Mercy! Live at “The Club”]] **Cannonball Adderley Quintet — [Mercy, Mercy, Mercy! Live at “The Club”](https://en.wikipedia.org/wiki/Mercy%2C_Mercy%2C_Mercy%21_Live_at_%22The_Club%22).** *Coming soon…*
 - ![[elp-elp.jpg|Cover of Emerson, Lake & Palmer]] **Emerson, Lake & Palmer — [Emerson, Lake & Palmer](https://en.wikipedia.org/wiki/Emerson,_Lake_%26_Palmer_(album)).** *Coming soon…*
