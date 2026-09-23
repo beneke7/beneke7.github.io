@@ -140,7 +140,7 @@ def render_page(output, title, active, body, metadata, version):
         classes.extend(("planet-space", f"planet-{planet}"))
     elif metadata.get("stars") == "dim":
         classes.append("dim-stars")
-    stars = "\n".join(f'<span class="pixel-star star-{letter}"></span>' for letter in "abcdefg")
+    stars = "\n".join(f'<span class="pixel-star star-{letter}"></span>' for letter in "abcdefghij")
     planet_markup = ""
     if planet in PLANETS:
         asset = PLANETS[planet]
@@ -182,13 +182,13 @@ def render_page(output, title, active, body, metadata, version):
     {planet_markup}
   </div>
   <header>
+    <nav class="top-nav" aria-label="Main navigation">
+      {nav}
+    </nav>
     <div class="theme-switch" role="group" aria-label="Color theme">
       <button type="button" data-theme-choice="dark" aria-label="Dark mode" aria-pressed="true">☾</button>
       <button type="button" data-theme-choice="light" aria-label="Light mode" aria-pressed="false">☼</button>
     </div>
-    <nav class="top-nav" aria-label="Main navigation">
-      {nav}
-    </nav>
   </header>
   <main class="markdown-content">
     {body}
