@@ -64,15 +64,15 @@ He woke up to loud drums, horns and beaming spotlights—a fair was ahead. He la
 ---
 ## Album reviews
 
-This list contains short descriptions and reviews about some of my favourite records. There will be no grading - most of it is great. Also the websites shuffles the albums, so you get a higher chance of cool random exploration.
+This list contains short descriptions and reviews about some of my favourite records. There will be no grading - most of it is great. Also the websites shuffles the albums, so you get a higher chance of cool random exploration. I try to omit the more well known and cheesy stuff, or I try to offer a unique take on them.
 
 - ![[mercy-mercy-mercy.jpg|Cover of Mercy, Mercy, Mercy! Live at “The Club”]] **Cannonball Adderley Quintet — [Mercy, Mercy, Mercy! Live at “The Club”](https://en.wikipedia.org/wiki/Mercy%2C_Mercy%2C_Mercy%21_Live_at_%22The_Club%22).** When adversity takes a hold there is nothing much more you can do. I think today many people just need *mercy* from YOU and each other - and that is honestly mostly it; psychology so to say is secondary in my opinion. More technically, this is one of the cleanest and most beautiful capture of the live jazz vibe. Such joyful and honest playing from the band. Ahh and the Wurlitzer...
 - ![[elp-elp.jpg|Cover of Emerson, Lake & Palmer]] **Emerson, Lake & Palmer — [Emerson, Lake & Palmer](https://en.wikipedia.org/wiki/Emerson,_Lake_%26_Palmer_(album)).** Staple 70s prog rock. Very virtuosic, sometimes a little weird, overall very enjoyable (although I would only recommend for *True Believers*). You wouldn't think that there are still some people playing the keys like this, but one of the Jesuit churches in Budapest features an organist with a very similar style, and unbelievable improvisational capabilities: 10/10; highly recommended.
-- ![[bright-size-life.jpg|Cover of Bright Size Life]] **Pat Metheny — [Bright Size Life](https://en.wikipedia.org/wiki/Bright_Size_Life).** *Coming soon…*
-- ![[gary-clark-jr-live.jpg|Cover of Gary Clark Jr. Live]] **Gary Clark Jr. — [Gary Clark Jr. Live](https://en.wikipedia.org/wiki/Gary_Clark_Jr._Live).** *Coming soon…*
-- ![[to-pimp-a-butterfly.png|Cover of To Pimp a Butterfly]] **Kendrick Lamar — [To Pimp a Butterfly](https://en.wikipedia.org/wiki/To_Pimp_a_Butterfly).** *Coming soon…*
+- ![[bright-size-life.jpg|Cover of Bright Size Life]] **Pat Metheny — [Bright Size Life](https://en.wikipedia.org/wiki/Bright_Size_Life).** *Coming soon...*
+- ![[gary-clark-jr-live.jpg|Cover of Gary Clark Jr. Live]] **Gary Clark Jr. — [Gary Clark Jr. Live](https://en.wikipedia.org/wiki/Gary_Clark_Jr._Live).**  Very pure, raw and visceral, and I just love the cranked tube amplifiers.  It either makes me feel like the coolest guy ever, or makes me cry and repent my sins.
+- ![[to-pimp-a-butterfly.png|Cover of To Pimp a Butterfly]] **Kendrick Lamar — [To Pimp a Butterfly](https://en.wikipedia.org/wiki/To_Pimp_a_Butterfly).** Im still looking words, top 3 21st century for sure.
 - ![[imaginal-disk.png|Cover of Imaginal Disk]] **Magdalena Bay — [Imaginal Disk](https://en.wikipedia.org/wiki/Imaginal_Disk).** *Coming soon…*
-- ![[end-of-the-world-party.jpg|Cover of End of the World Party (Just in Case)]] **Medeski Martin & Wood — [End of the World Party (Just in Case)](https://en.wikipedia.org/wiki/End_of_the_World_Party_(Just_in_Case)).** *Coming soon…*
+- ![[end-of-the-world-party.jpg|Cover of End of the World Party (Just in Case)]] **Medeski Martin & Wood — [End of the World Party (Just in Case)](https://en.wikipedia.org/wiki/End_of_the_World_Party_(Just_in_Case)).** 
 - ![[cowboy-bebop-ost.jpg|Cover of Cowboy Bebop]] **Seatbelts — [Cowboy Bebop (Original Soundtrack)](https://en.wikipedia.org/wiki/Cowboy_Bebop_(album)).** *Coming soon…*
 - ![[southern-nights.jpg|Cover of Southern Nights]] **Sullivan Fortner — [Southern Nights](https://music.apple.com/us/album/southern-nights/1778512959).** *Coming soon…*
 - ![[luvsic-hexalogy.jpg|Cover of Luv(sic) Hexalogy]] **Nujabes & Shing02 — [Luv(sic) Hexalogy](https://en.wikipedia.org/wiki/Luv(Sic)_Hexalogy).** *Coming soon…*
