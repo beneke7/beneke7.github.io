@@ -36,7 +36,11 @@ if (flickerStars.length && !window.matchMedia("(prefers-reduced-motion: reduce)"
 
 const musicPage = document.querySelector(".music-page");
 if (musicPage) {
-  const albumList = musicPage.querySelector("#album-reviews + ul");
+  let albumList = musicPage.querySelector("#album-reviews")?.nextElementSibling;
+  while (albumList && albumList.tagName !== "UL" && albumList.tagName !== "H2") {
+    albumList = albumList.nextElementSibling;
+  }
+  if (albumList?.tagName !== "UL") albumList = null;
   if (albumList) {
     const records = Array.from(albumList.children);
     for (let index = records.length - 1; index > 0; index--) {
