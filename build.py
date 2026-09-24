@@ -288,6 +288,8 @@ class ContentLinks(HTMLParser):
 def links_for_site(sources):
     links = []
     for source, body in sources:
+        if source.parent == Path("blog"):
+            body = re.sub(r"<h2\b[^>]*>\s*(?:\d+(?:\.\d+)*\s+)?References\s*</h2>.*?(?=<h[1-2]\b|\Z)", "", body, flags=re.I | re.S)
         if source == Path("music.html"):
             body = re.sub(r"<h2\b[^>]*>\s*Album reviews\s*</h2>.*?(?=<h2\b|\Z)", "", body, flags=re.I | re.S)
         parser = ContentLinks()
