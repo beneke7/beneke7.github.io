@@ -221,7 +221,7 @@ html[data-theme="light"] .top-nav a[aria-current="page"] {
   filter: invert(1) hue-rotate(180deg);
 }
 header { position: relative; padding: .35rem 0 1.55rem; }
-.theme-switch {
+.header-controls {
   position: absolute;
   top: calc(100% - 1.3rem);
   right: 0;
@@ -230,6 +230,7 @@ header { position: relative; padding: .35rem 0 1.55rem; }
   gap: .25rem;
   margin: 0;
 }
+.theme-switch { display: flex; gap: .25rem; }
 .theme-switch button {
   min-width: 1.8rem;
   padding: .08em .25em;
@@ -241,8 +242,19 @@ header { position: relative; padding: .35rem 0 1.55rem; }
   line-height: 1;
   cursor: pointer;
 }
-.theme-switch button[aria-pressed="true"] { border-color: #fff; }
-.theme-switch button:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+.planet-motion-toggle {
+  min-width: 1.8rem;
+  padding: .08em .25em;
+  border: 1px solid #777;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-size: 1em;
+  line-height: 1;
+  cursor: pointer;
+}
+.theme-switch button[aria-pressed="true"], .planet-motion-toggle[aria-pressed="true"] { border-color: #fff; }
+.theme-switch button:focus-visible, .planet-motion-toggle:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 footer { margin-top: 3rem; padding: 1rem 0 0; border-top: 3px solid #fff; }
 .footer-star {
   display: inline-block;
@@ -355,30 +367,35 @@ html[data-theme="light"] .space:not(.dim-stars) .pixel-star.flicker { opacity: .
 }
 html[data-theme="light"] .space::after { opacity: .75; }
 .space.dim-stars .pixel-star, .space.dim-stars::before, .space.dim-stars::after { opacity: .18; }
-.space picture {
+.space .planet-art {
   position: absolute;
   z-index: 4;
-  left: -35vw;
-  bottom: -45vh;
-  width: min(128vh, 90vw, 1150px);
+  top: 236px;
+  left: calc(50% - 1250px);
+  width: 1150px;
   aspect-ratio: 1;
   overflow: hidden;
   border-radius: 50%;
 }
-.space.planet-ice-world picture, .space.planet-gas-giant picture { left: auto; right: -35vw; }
-.space.planet-ice-world picture { width: min(110vh, 75vw, 920px); }
-.space.planet-original picture { width: min(100vh, 70vw, 900px); }
-.space .planet-gif { image-rendering: pixelated; }
-html[data-theme="light"] .space.planet-original picture { filter: hue-rotate(-180deg) invert(1); }
-html[data-theme="light"] .space.planet-ice-world picture { filter: brightness(.75); }
-.space picture { display: block; }
-.space img {
+.space .planet-art picture, .space .planet-art img {
+  position: absolute;
+  inset: 0;
   display: block;
   width: 100%;
   height: 100%;
   object-fit: contain;
   image-rendering: pixelated;
 }
+.space .planet-art .planet-gif { opacity: 0; }
+.space .planet-art.is-animated .planet-gif { opacity: 1; }
+.space.planet-ice-world .planet-art, .space.planet-gas-giant .planet-art {
+  right: calc(50% - 1250px);
+  left: auto;
+}
+.space.planet-ice-world .planet-art { top: 466px; width: 920px; }
+.space.planet-original .planet-art { top: 486px; width: 900px; }
+html[data-theme="light"] .space.planet-original .planet-art { filter: hue-rotate(-180deg) invert(1); }
+html[data-theme="light"] .space.planet-ice-world .planet-art { filter: brightness(.75); }
 main, header, footer { text-shadow: 0 1px 4px #000; }
 @media (max-width: 800px) {
   body { font-size: 120%; }
@@ -390,9 +407,10 @@ main, header, footer { text-shadow: 0 1px 4px #000; }
   .markdown-content blockquote { margin-inline: 0; padding-inline-start: .9em; }
   .top-nav { font-size: 1.15rem; letter-spacing: .06em; gap: .25rem; }
   .top-nav a { min-height: 2.75rem; }
-  .theme-switch { position: static; margin-top: .45rem; }
+  .header-controls { position: static; margin-top: .45rem; }
   .theme-switch button { min-width: 2.75rem; min-height: 2.75rem; }
-  .space.planet-space picture { display: none; }
+  .planet-motion-toggle { display: none; }
+  .space.planet-space .planet-art { display: none; }
   .space .star-b, .space .star-c, .space .star-e,
   .space .star-g, .space .star-h, .space .star-j { display: none; }
   html[data-theme="light"] .space .star-k,
@@ -400,6 +418,9 @@ main, header, footer { text-shadow: 0 1px 4px #000; }
   html[data-theme="light"] .space .star-m { display: none; }
   .space::before { opacity: .5; }
   .space::after { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .planet-motion-toggle { display: none; }
 }
 @media (max-width: 600px) {
   body { padding: .8rem 1rem 1.75rem; font-size: 112.5%; }

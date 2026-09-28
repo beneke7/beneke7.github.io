@@ -167,8 +167,12 @@ def render_page(output, title, active, body, metadata, version):
         classes.extend(("planet-space", f"planet-{planet}"))
     elif metadata.get("stars") == "dim":
         classes.append("dim-stars")
+    gif_assets = tuple(dict.fromkeys((*PLANETS.values(), "light-wet-planet")))
+    gif_urls = "|".join(versioned_url(Path("assets") / f"{asset}.gif", output, version) for asset in gif_assets)
+    gif_data = f' data-planet-gifs="{escape(gif_urls, quote=True)}"'
     stars = "\n".join(f'<span class="pixel-star star-{letter}"></span>' for letter in "abcdefghijklm")
     planet_markup = ""
+    planet_control = ""
     if planet in PLANETS:
         asset = PLANETS[planet]
         gif = Path("assets") / f"{asset}.gif"
@@ -182,13 +186,15 @@ def render_page(output, title, active, body, metadata, version):
             light_poster = Path("assets/light-wet-planet.png")
             gif_theme_sources += f' data-light-src="{versioned_url(light_gif, output, version)}"'
             poster_theme_sources += f' data-light-src="{versioned_url(light_poster, output, version)}"'
-        poster_source = f'<source class="planet-poster-source" media="(min-width: 801px) and (prefers-reduced-motion: reduce)" srcset="{poster_url}"{poster_theme_sources}>'
-        gif_source = f'<source class="planet-gif-source" media="(min-width: 801px) and (prefers-reduced-motion: no-preference)" srcset="{gif_url}"{gif_theme_sources}>'
-        planet_markup = f'''<picture>
-    {poster_source}
-    {gif_source}
-    <img class="planet-poster"{poster_theme_sources} alt="">
-  </picture>'''
+        poster_source = f'<source class="planet-poster-source" media="(min-width: 801px)" srcset="{poster_url}"{poster_theme_sources}>'
+        planet_markup = f'''<div class="planet-art">
+    <picture>
+      {poster_source}
+      <img class="planet-poster" alt="">
+    </picture>
+    <img class="planet-gif"{gif_theme_sources} alt="" aria-hidden="true">
+  </div>'''
+        planet_control = '<button type="button" class="planet-motion-toggle" data-planet-motion aria-label="Start planet animation" aria-pressed="false">▷</button>'
     html_title = title if active == "about" else f"{title} — Beneke’s corner of the web"
     language = escape(metadata.get("lang", "en"))
     mathjax = '<script defer src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js"></script>' if 'class="math ' in body else ""
@@ -206,7 +212,7 @@ def render_page(output, title, active, body, metadata, version):
   <script src="{prefix}site.js?v={version}" defer></script>
 </head>
 <body>
-  <div class="{' '.join(classes)}" aria-hidden="true">
+  <div class="{' '.join(classes)}" aria-hidden="true"{gif_data}>
     {stars}
     {planet_markup}
   </div>
@@ -214,9 +220,12 @@ def render_page(output, title, active, body, metadata, version):
     <nav class="top-nav" aria-label="Main navigation">
       {nav}
     </nav>
-    <div class="theme-switch" role="group" aria-label="Color theme">
-      <button type="button" data-theme-choice="dark" aria-label="Dark mode" aria-pressed="true">☾</button>
-      <button type="button" data-theme-choice="light" aria-label="Light mode" aria-pressed="false">☼</button>
+    <div class="header-controls">
+      <div class="theme-switch" role="group" aria-label="Color theme">
+        <button type="button" data-theme-choice="dark" aria-label="Dark mode" aria-pressed="true">☾</button>
+        <button type="button" data-theme-choice="light" aria-label="Light mode" aria-pressed="false">☼</button>
+      </div>
+      {planet_control}
     </div>
   </header>
   <main class="markdown-content{content_class}">
