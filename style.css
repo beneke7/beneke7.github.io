@@ -243,8 +243,11 @@ header { position: relative; padding: .35rem 0 1.55rem; }
   cursor: pointer;
 }
 .planet-motion-toggle {
-  min-width: 1.8rem;
-  padding: .08em .25em;
+  display: grid;
+  width: 1.8rem;
+  height: 1.8rem;
+  place-items: center;
+  padding: 0;
   border: 1px solid #777;
   background: transparent;
   color: inherit;
@@ -348,7 +351,15 @@ html[data-theme="light"] .space:not(.dim-stars) .pixel-star.flicker { opacity: .
     radial-gradient(1px 1px at 74% 46%, #fff 99%, transparent),
     radial-gradient(1px 1px at 78% 8%, #fff 99%, transparent),
     radial-gradient(1px 1px at 88% 51%, #fff 99%, transparent),
-    radial-gradient(1px 1px at 97% 35%, #fff 99%, transparent);
+    radial-gradient(1px 1px at 97% 35%, #fff 99%, transparent),
+    radial-gradient(2px 2px at calc(10% - 5.8rem) 12%, #fff 99%, transparent),
+    radial-gradient(1px 1px at calc(20% - 11.6rem) 31%, #fff 99%, transparent),
+    radial-gradient(2px 2px at calc(30% - 17.4rem) 68%, #fff 99%, transparent),
+    radial-gradient(1px 1px at calc(40% - 23.2rem) 88%, #fff 99%, transparent),
+    radial-gradient(1px 1px at calc(60% + 23.2rem) 23%, #fff 99%, transparent),
+    radial-gradient(2px 2px at calc(70% + 17.4rem) 48%, #fff 99%, transparent),
+    radial-gradient(1px 1px at calc(80% + 11.6rem) 79%, #fff 99%, transparent),
+    radial-gradient(2px 2px at calc(90% + 5.8rem) 61%, #fff 99%, transparent);
   content: "";
 }
 .space::after {

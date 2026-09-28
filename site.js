@@ -3,7 +3,24 @@ const space = document.querySelector(".space");
 const planetArt = document.querySelector(".planet-art");
 const planetGif = planetArt?.querySelector(".planet-gif");
 const planetMotionButton = document.querySelector("[data-planet-motion]");
+const planetAnimationAllowed = window.matchMedia("(min-width: 801px)").matches && !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 let planetMotionEnabled = false;
+try {
+  planetMotionEnabled = localStorage.getItem("planet-motion") === "true";
+} catch {}
+const planetGifPreloads = new Set();
+
+const preloadPlanetGifs = (currentSource) => {
+  if (!planetAnimationAllowed || !space?.dataset.planetGifs) return;
+  const sources = [...new Set(space.dataset.planetGifs.split("|").filter(Boolean))];
+  sources.filter((source) => source !== currentSource).forEach((source) => {
+    const image = new Image();
+    image.fetchPriority = "low";
+    image.onload = image.onerror = () => planetGifPreloads.delete(image);
+    planetGifPreloads.add(image);
+    image.src = source;
+  });
+};
 
 const updatePlanetGif = () => {
   if (!planetGif || !planetMotionButton) return;
@@ -13,6 +30,7 @@ const updatePlanetGif = () => {
   planetArt.classList.remove("is-animated");
   planetMotionButton.setAttribute("aria-busy", "true");
   planetGif.dataset.activeSrc = source;
+  planetGif.fetchPriority = "high";
   planetGif.onload = () => {
     if (!planetMotionEnabled || planetGif.dataset.activeSrc !== source) return;
     planetArt.classList.add("is-animated");
@@ -21,6 +39,9 @@ const updatePlanetGif = () => {
   planetGif.onerror = () => {
     if (!planetMotionEnabled || planetGif.dataset.activeSrc !== source) return;
     planetMotionEnabled = false;
+    try {
+      localStorage.setItem("planet-motion", "false");
+    } catch {}
     planetMotionButton.textContent = "▷";
     planetMotionButton.setAttribute("aria-pressed", "false");
     planetMotionButton.setAttribute("aria-label", "Start planet animation");
@@ -34,11 +55,16 @@ const updatePlanetGif = () => {
 const setPlanetMotion = (enabled) => {
   if (!planetMotionButton || !planetGif) return;
   planetMotionEnabled = enabled;
+  try {
+    localStorage.setItem("planet-motion", String(enabled));
+  } catch {}
   planetMotionButton.textContent = enabled ? "Ⅱ" : "▷";
   planetMotionButton.setAttribute("aria-pressed", String(enabled));
   planetMotionButton.setAttribute("aria-label", `${enabled ? "Stop" : "Start"} planet animation`);
   if (enabled) {
     updatePlanetGif();
+    const theme = document.documentElement.dataset.theme === "light" ? "light" : "dark";
+    preloadPlanetGifs(planetGif.dataset[`${theme}Src`] || planetGif.dataset.darkSrc);
   } else {
     planetArt.classList.remove("is-animated");
     planetGif.removeAttribute("src");
@@ -70,29 +96,14 @@ themeButtons.forEach((button) => {
   button.addEventListener("click", () => setTheme(button.dataset.themeChoice));
 });
 if (planetMotionButton) {
-  if (window.matchMedia("(max-width: 800px)").matches || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+  if (!planetAnimationAllowed) {
     planetMotionButton.hidden = true;
+  } else {
+    planetMotionButton.addEventListener("click", () => setPlanetMotion(!planetMotionEnabled));
+    if (planetMotionEnabled) setPlanetMotion(true);
   }
-  planetMotionButton.addEventListener("click", () => setPlanetMotion(!planetMotionEnabled));
 }
 setTheme(document.documentElement.dataset.theme || "dark");
-
-if (space?.dataset.planetGifs && window.matchMedia("(min-width: 801px)").matches && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-  window.addEventListener("load", () => {
-    const theme = document.documentElement.dataset.theme === "light" ? "light" : "dark";
-    const firstGif = planetGif?.dataset[`${theme}Src`] || planetGif?.dataset.darkSrc;
-    const urls = [...new Set([firstGif, ...space.dataset.planetGifs.split("|")].filter(Boolean))];
-    let index = 0;
-    const preloadNext = () => {
-      if (index >= urls.length) return;
-      const image = new Image();
-      image.fetchPriority = "low";
-      image.onload = image.onerror = () => window.setTimeout(preloadNext, 0);
-      image.src = urls[index++];
-    };
-    window.setTimeout(preloadNext, 500);
-  }, { once: true });
-}
 
 const flickerStars = document.querySelectorAll(".space .star-k, .space .star-l, .space .star-m");
 if (flickerStars.length && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
