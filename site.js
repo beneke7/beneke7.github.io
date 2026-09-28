@@ -8,19 +8,6 @@ let planetMotionEnabled = false;
 try {
   planetMotionEnabled = localStorage.getItem("planet-motion") === "true";
 } catch {}
-const planetGifPreloads = new Set();
-
-const preloadPlanetGifs = (currentSource) => {
-  if (!planetAnimationAllowed || !space?.dataset.planetGifs) return;
-  const sources = [...new Set(space.dataset.planetGifs.split("|").filter(Boolean))];
-  sources.filter((source) => source !== currentSource).forEach((source) => {
-    const image = new Image();
-    image.fetchPriority = "low";
-    image.onload = image.onerror = () => planetGifPreloads.delete(image);
-    planetGifPreloads.add(image);
-    image.src = source;
-  });
-};
 
 const updatePlanetGif = () => {
   if (!planetGif || !planetMotionButton) return;
@@ -30,7 +17,6 @@ const updatePlanetGif = () => {
   planetArt.classList.remove("is-animated");
   planetMotionButton.setAttribute("aria-busy", "true");
   planetGif.dataset.activeSrc = source;
-  planetGif.fetchPriority = "high";
   planetGif.onload = () => {
     if (!planetMotionEnabled || planetGif.dataset.activeSrc !== source) return;
     planetArt.classList.add("is-animated");
@@ -63,8 +49,6 @@ const setPlanetMotion = (enabled) => {
   planetMotionButton.setAttribute("aria-label", `${enabled ? "Stop" : "Start"} planet animation`);
   if (enabled) {
     updatePlanetGif();
-    const theme = document.documentElement.dataset.theme === "light" ? "light" : "dark";
-    preloadPlanetGifs(planetGif.dataset[`${theme}Src`] || planetGif.dataset.darkSrc);
   } else {
     planetArt.classList.remove("is-animated");
     planetGif.removeAttribute("src");
@@ -104,6 +88,23 @@ if (planetMotionButton) {
   }
 }
 setTheme(document.documentElement.dataset.theme || "dark");
+
+if (space?.dataset.planetGifs && planetAnimationAllowed) {
+  window.addEventListener("load", () => {
+    const theme = document.documentElement.dataset.theme === "light" ? "light" : "dark";
+    const firstGif = planetGif?.dataset[`${theme}Src`] || planetGif?.dataset.darkSrc;
+    const urls = [...new Set([firstGif, ...space.dataset.planetGifs.split("|")].filter(Boolean))];
+    let index = 0;
+    const preloadNext = () => {
+      if (index >= urls.length) return;
+      const image = new Image();
+      image.fetchPriority = "low";
+      image.onload = image.onerror = () => window.setTimeout(preloadNext, 0);
+      image.src = urls[index++];
+    };
+    window.setTimeout(preloadNext, 500);
+  }, { once: true });
+}
 
 const flickerStars = document.querySelectorAll(".space .star-k, .space .star-l, .space .star-m");
 if (flickerStars.length && !window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
