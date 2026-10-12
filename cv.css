@@ -1,4 +1,5 @@
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 :root { color-scheme: dark; }
 body {
   margin: 0;
@@ -31,7 +32,7 @@ a { color: inherit; text-underline-offset: .2em; }
   font-size: .9rem;
 }
 .controls a { margin-right: auto; }
-button {
+button, .music summary {
   padding: .4em .8em;
   border: 1px solid #888;
   background: #000;
@@ -39,7 +40,22 @@ button {
   font: inherit;
   cursor: pointer;
 }
-button:hover { border-color: #ffe81f; }
+button:hover, .music summary:hover { border-color: #ffe81f; }
+.music { position: relative; }
+.music-player {
+  position: absolute;
+  top: calc(100% + .65rem);
+  right: 0;
+  width: 322px;
+  max-width: calc(100vw - 2rem);
+  padding-bottom: .5rem;
+  border: 1px solid #888;
+  background: #000;
+}
+.music-player iframe { display: block; width: 100%; border: 0; }
+.music-player a { display: block; margin: .5rem; font-size: .8rem; }
+#scroll-control { display: flex; align-items: center; gap: .4rem; }
+#position { width: 8rem; accent-color: #ffe81f; }
 :focus-visible { outline: 2px solid #ffe81f; outline-offset: 4px; }
 .status { max-width: 44rem; margin: 2rem auto; padding: 0 1rem; color: #fff; }
 .resume { max-width: 44rem; margin: 2rem auto 4rem; padding: 0 1.25rem; }
@@ -92,7 +108,7 @@ body.is-crawling { overflow: hidden; }
     animation: none;
   }
   .controls { position: relative !important; }
-  .controls button { display: none; }
+  .controls button, #scroll-control { display: none; }
   .stars { opacity: .4; }
 }
 @media print {

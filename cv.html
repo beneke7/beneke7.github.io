@@ -15,6 +15,14 @@
     <button type="button" id="pause" hidden>Pause</button>
     <button type="button" id="replay" hidden>Replay</button>
     <button type="button" id="read" hidden>Read CV</button>
+    <label id="scroll-control" hidden>Scroll <input id="position" type="range" min="0" max="100" step="0.1" value="0" aria-label="Crawl position"></label>
+    <details class="music" id="music">
+      <summary>Music</summary>
+      <div class="music-player">
+        <iframe id="soundtrack" title="John Williams — Star Wars Main Title" width="320" height="220" allow="autoplay; encrypted-media; fullscreen" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        <a href="https://www.youtube.com/watch?v=e9lapdvLSGw" target="_blank" rel="noopener">Listen on YouTube</a>
+      </div>
+    </details>
   </nav>
   <p class="status" role="status">Loading the CV…</p>
   <noscript><p class="status">JavaScript is needed to load the CV. <a href="cv/resume.json">Read the CV source</a>.</p></noscript>

@@ -3,6 +3,10 @@ const status = document.querySelector(".status");
 const pause = document.querySelector("#pause");
 const replay = document.querySelector("#replay");
 const read = document.querySelector("#read");
+const scrollControl = document.querySelector("#scroll-control");
+const position = document.querySelector("#position");
+const music = document.querySelector("#music");
+const soundtrack = document.querySelector("#soundtrack");
 const staticView = window.matchMedia("(max-width: 800px), (prefers-reduced-motion: reduce)");
 
 function addText(parent, tag, text, className) {
@@ -35,13 +39,52 @@ function startCrawl() {
   document.body.classList.remove("is-crawling", "is-paused");
   void resume.offsetHeight;
   document.body.classList.add("is-crawling");
-  resume.style.setProperty("--crawl-duration", `${Math.max(90, resume.scrollHeight / 14)}s`);
+  resume.style.setProperty("--crawl-duration", `${Math.max(70, resume.scrollHeight / 18)}s`);
   pause.textContent = "Pause";
   pause.disabled = false;
   pause.hidden = false;
   replay.hidden = false;
   read.textContent = "Read CV";
+  scrollControl.hidden = false;
+  position.value = 0;
 }
+
+function seekCrawl(time) {
+  if (!document.body.classList.contains("is-crawling")) return;
+  const animation = resume.getAnimations()[0];
+  if (!animation) return;
+  document.body.classList.add("is-paused");
+  const duration = animation.effect.getComputedTiming().duration;
+  animation.currentTime = Math.max(0, Math.min(duration, time));
+  position.value = 100 * animation.currentTime / duration;
+  pause.disabled = false;
+  pause.textContent = "Resume";
+}
+
+position.addEventListener("input", () => {
+  const animation = resume.getAnimations()[0];
+  if (animation) seekCrawl(position.value / 100 * animation.effect.getComputedTiming().duration);
+});
+document.querySelector(".stage").addEventListener("wheel", event => {
+  const animation = resume.getAnimations()[0];
+  if (!document.body.classList.contains("is-crawling") || !animation || event.ctrlKey) return;
+  event.preventDefault();
+  const pixels = event.deltaY * (event.deltaMode === 1 ? 20 : event.deltaMode === 2 ? window.innerHeight : 1);
+  seekCrawl((animation.currentTime || 0) + pixels * 35);
+}, { passive: false });
+window.setInterval(() => {
+  if (scrollControl.hidden) return;
+  const animation = resume.getAnimations()[0];
+  if (animation) position.value = 100 * (animation.currentTime || 0) / animation.effect.getComputedTiming().duration;
+}, 250);
+
+music.addEventListener("toggle", () => {
+  if (music.open) {
+    soundtrack.src = "https://www.youtube-nocookie.com/embed/e9lapdvLSGw?autoplay=1&rel=0";
+  } else {
+    soundtrack.removeAttribute("src");
+  }
+});
 
 pause.addEventListener("click", () => {
   const paused = document.body.classList.toggle("is-paused");
@@ -59,6 +102,7 @@ read.addEventListener("click", () => {
     document.body.classList.remove("is-crawling", "is-paused");
     pause.hidden = true;
     replay.hidden = true;
+    scrollControl.hidden = true;
     read.textContent = "Play crawl";
     window.scrollTo(0, 0);
   } else {
@@ -67,10 +111,11 @@ read.addEventListener("click", () => {
 });
 staticView.addEventListener("change", () => {
   if (staticView.matches) {
-    if ([pause, replay, read].includes(document.activeElement)) document.querySelector(".controls a").focus();
+    if ([pause, replay, read, position].includes(document.activeElement)) document.querySelector(".controls a").focus();
     document.body.classList.remove("is-crawling", "is-paused");
     pause.hidden = true;
     replay.hidden = true;
+    scrollControl.hidden = true;
   }
   read.hidden = staticView.matches || !resume.childElementCount;
   read.textContent = "Play crawl";
